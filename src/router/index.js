@@ -6,10 +6,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    // 登录页面
+    // admin登录页面
     path: '/adminlogin',
-    name: 'Login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/login/AdminLogin.vue')
+    name: 'AdminLogin',
+    component: () => import('@/views/login/AdminLogin.vue')
   }
 ]
 
