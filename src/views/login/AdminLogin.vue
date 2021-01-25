@@ -29,8 +29,6 @@
 
 <script>
 
-// import request from "@/utils/request";
-// import axios from "axios";
 import {login} from '@/api/login';
 export default {
   name: "AdminLogin",
