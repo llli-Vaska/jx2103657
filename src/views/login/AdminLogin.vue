@@ -1,16 +1,19 @@
 <template>
   <div class="login-container">
-    <el-form class="admin-login-form" ref="form">
-      <el-form-item >
+    <el-form class="admin-login-form"  ref="form" :rules="rules">
+      <el-form-item prop="username">
         <el-input
+            prefix-icon="el-icon-user"
             v-model="username"
             placeholder="请输入账号">
         </el-input>
       </el-form-item>
-      <el-form-item >
+      <el-form-item prop="password">
         <el-input
+            prefix-icon="el-icon-lock"
             v-model="password"
-            placeholder="请输入密码">
+            placeholder="请输入密码"
+            show-password>
         </el-input>
       </el-form-item>
       <el-form-item>
@@ -37,29 +40,37 @@ export default {
     return{
         username:'',//账号
         password:'', //密码
-      checked: false, // 是否同意协议的选中状态
+        checked: false, // 是否同意协议的选中状态
+      rules: {
+        username: [{required: true, message: '请输入正确的账号', trigger: 'blur'}],
+        password: [{required: true, message: '请输入正确的密码', trigger: 'blur'}]
+      }
+
     }
   },
   methods: {
     onAdminLogin() {
+      //获取表单数据(根据接口要求绑定数据)
       const username = this.username
       const password = this.password
       const params = {
         username,
         password
       }
-      //获取表单数据(根据接口要求绑定数据)
       // 表单验证
       // 验证通过，提交登录
       login(params).then(res => {
+        if (res.data.code === 0) {
+          alert('登陆成功')
+        }else{
+          console.log('登陆失败')
+        }
       console.log(res)
     }).catch(err => {
       console.log(err);
     })
-      // 处理后端响应结果
-      //   成功：xxx
-      //   失败：xxx
-    }
+    },
+
   },
   mounted() {
     const username = this.username

@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export function login(params) {
+function login(params){
     return axios({
         url:'/adminlogin',
         method:'post',
         params: params
     })
 }
+module.exports = login
