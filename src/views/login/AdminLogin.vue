@@ -1,29 +1,28 @@
 <template>
   <div class="login-container">
-    <el-form class="admin-login-form"  ref="form" :rules="rules">
+    <el-form class="admin-login-form"  ref="ruleForm" :rules="rules" :model="ruleForm">
       <el-form-item prop="username">
         <el-input
             prefix-icon="el-icon-user"
-            v-model="username"
+            v-model="ruleForm.username"
             placeholder="请输入账号">
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
             prefix-icon="el-icon-lock"
-            v-model="password"
+            v-model="ruleForm.password"
             placeholder="请输入密码"
             show-password>
         </el-input>
       </el-form-item>
-      <el-form-item>
-        <el-checkbox v-model="checked"></el-checkbox>
-        我已阅读并同意用户协议和隐私条款
+      <el-form-item prop="types" >
+        <el-checkbox label="我已阅读并同意用户协议和隐私条款" v-model="ruleForm.types" ></el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button class="admin-login-btn"
                    type="primary"
-                   @click="onAdminLogin"
+                   @click="onAdminLogin('ruleForm')"
         >登录</el-button>
       </el-form-item>
     </el-form>
@@ -38,44 +37,52 @@ export default {
   comments: {},
   data() {
     return{
+      ruleForm:{
         username:'',//账号
         password:'', //密码
-        checked: false, // 是否同意协议的选中状态
+        types: [],
+      },
+        // checked: true, // 是否同意协议的选中状态
       rules: {
+        //表单验证提示
         username: [{required: true, message: '请输入正确的账号', trigger: 'blur'}],
-        password: [{required: true, message: '请输入正确的密码', trigger: 'blur'}]
+        password: [{required: true, message: '请输入正确的密码', trigger: 'blur'}],
+        types: [{ type: 'array', required: true, message: '请勾选', trigger: 'change',}]
       }
 
     }
   },
   methods: {
-    onAdminLogin() {
+
+    onAdminLogin(formName) {
       //获取表单数据(根据接口要求绑定数据)
-      const username = this.username
-      const password = this.password
+      const ruleForm = this.ruleForm
       const params = {
-        username,
-        password
+        ruleForm
       }
-      // 表单验证
-      // 验证通过，提交登录
-      login(params).then(res => {
-        if (res.data.code === 0) {
-          alert('登陆成功')
-        }else{
-          console.log('登陆失败')
+      //对表单信息进行验证查看是否填写完且是否勾选协议
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 表单验证,验证通过，提交登录
+          login(params).then(res => {
+            if (res.data.code === 0) {
+              alert('登陆成功')
+            }else{
+              console.log('登陆失败')
+            }
+            console.log(res)
+          }).catch(err => {
+            console.log(err);
+          })
+        } else {
+          console.log('账号未填写完整!');
+          return false;
         }
-      console.log(res)
-    }).catch(err => {
-      console.log(err);
-    })
+      });
+
     },
 
   },
-  mounted() {
-    const username = this.username
-    console.log(username)
-  }
 }
 
 </script>
