@@ -15,7 +15,7 @@ const routes = [
     //后台管理页面
     path: '/',
     name: 'Index',
-    component: () => import('@/views/admin/Index')
+    component: () => import('@/views/admin/AdminIndex')
   }
 ]
 
