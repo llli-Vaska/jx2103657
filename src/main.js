@@ -8,6 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 //加载全局样式文件
 import './styles/index.css'
 // const axios = require('axios');
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css';
+Vue.use(Antd);
+
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:3000';
 

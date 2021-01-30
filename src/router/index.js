@@ -10,6 +10,12 @@ const routes = [
     path: '/adminlogin',
     name: 'AdminLogin',
     component: () => import('@/views/login/AdminLogin.vue')
+  },
+  {
+    //后台管理页面
+    path: '/',
+    name: 'Index',
+    component: () => import('@/views/admin/Index')
   }
 ]
 
