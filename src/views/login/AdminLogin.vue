@@ -53,7 +53,6 @@ export default {
     }
   },
   methods: {
-
     onAdminLogin(formName) {
       //获取表单数据(根据接口要求绑定数据)
       const ruleForm = this.ruleForm
@@ -66,7 +65,20 @@ export default {
           // 表单验证,验证通过，提交登录
           login(params).then(res => {
             if (res.data.code === 0) {
-              alert('登陆成功')
+              // 将token取出，存储到localStorage以及vuex中
+              window.localStorage.setItem('username', res.data.username)
+              //将token保存到localStorage中
+              window.localStorage.setItem('token', res.data.token)
+              //将token保存到vuex中
+              this.$store.dispatch('setToken', res.data.token)
+              this.$store.dispatch('setAdmin', res.data.token)
+
+              setTimeout(() => {
+                    //跳转页面
+                      this.$router.push({ path: '/admin' })
+                    }, 1000)
+
+              console.log('登陆成功')
             }else{
               console.log('登陆失败')
             }
