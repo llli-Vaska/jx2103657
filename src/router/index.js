@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/vuex/store";
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -11,14 +10,41 @@ const routes = [
     name: 'AdminLogin',
     component: () => import('@/views/login/AdminLogin.vue')
   },
+
   {
     //后台管理页面
     path: '/admin',
-    name: 'AdminIndex',
+    // name: 'AdminIndex',
     meta: {
       requireAuth:true //进入该路由是需要登录的
     },
-    component: () => import('@/views/admin/AdminIndex')
+    component: () => import('@/views/admin/AdminIndex'),
+    children: [
+      {
+        path: '',
+        name: 'HoPage',
+        meta: {
+          requireAuth:true //进入该路由是需要登录的
+        },
+        component: () => import('@/components/index/HoPage')
+      },
+      {
+        path: 'StManage',
+        name: 'StManage',
+        meta: {
+          requireAuth:true //进入该路由是需要登录的
+        },
+        component: () => import('@/components/management/StManage')
+      },
+      {
+        path: 'BuManage',
+        name: 'BuManage',
+        meta: {
+          requireAuth:true //进入该路由是需要登录的
+        },
+        component: () => import('@/components/management/BuManage')
+      }
+    ]
   }
 ];
 

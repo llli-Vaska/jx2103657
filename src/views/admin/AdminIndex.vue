@@ -8,15 +8,17 @@
           <span class="logo-title">招聘管理后台</span>
         </span>
       </div>
-      <a-menu theme="dark" mode="inline" :default-selected-keys="['sub1']">
+      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
         <a-menu-item key="1">
+          <router-link to='/admin'>
           <a-icon type="home" />
           <span>首页</span>
+          </router-link>
         </a-menu-item>
         <a-sub-menu key="sub1">
           <span slot="title"><a-icon type="user" /><span>用户管理</span></span>
-          <a-menu-item key="3">学生管理</a-menu-item>
-          <a-menu-item key="4">企业管理</a-menu-item>
+          <a-menu-item key="3"><router-link to='/admin/StManage'>学生管理</router-link></a-menu-item>
+          <a-menu-item key="4"><router-link to='/admin/BuManage'>企业管理</router-link></a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <span slot="title"><a-icon type="edit" /><span>信息发布</span></span>
@@ -31,38 +33,37 @@
     </a-layout-sider>
     <a-layout >
                       <!--   header   -->
-      <a-layout-header style="background: #fff; padding: 0">
+      <a-layout-header style="background-color: #001529; padding: 0;">
         <a-icon
+            style="color: #FFFFFF"
             class="trigger"
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="() => (collapsed = !collapsed)"
         />
-          <a-dropdown class="logoout">
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+          <a-dropdown class="logoout" >
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()" style="color: #FFFFFF">
               admin <a-icon type="down" />
             </a>
             <a-menu slot="overlay">
-
                 <a-menu-item>
-                    <a href="javascript:;" @click="logout()">退出</a>
+                    <a href="javascript:" @click="logout()">退出</a>
                 </a-menu-item>
-
-
             </a-menu>
           </a-dropdown>
       </a-layout-header>
                         <!--  body   -->
-      <a-layout-content
-          :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
-      >
-        Content
+      <a-layout-content>
+        <router-view></router-view>
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 <script>
+
 export default {
   name: "AdminIndex",
+  comments: {
+  },
   data() {
     return {
       collapsed: false,
@@ -80,6 +81,15 @@ export default {
         window.location.reload()
       }
   },
+  mounted() {
+    // 当页面刷新时，指定回到首页路径
+    window.addEventListener('load', () => {
+      if (this.$route.path !== '/admin') { // admin表示后台首页
+        this.$router.replace('/admin') // 切换到首页
+      }
+    })
+
+  }
 };
 </script>
 <style>
@@ -90,8 +100,8 @@ export default {
 /*  position: absolute;*/
 /*}*/
 .logoout {
-  position: absolute;
-  right: 20px;
+  position: relative;
+  left: 87%;
 }
 .logoimg {
   height:30px;

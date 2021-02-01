@@ -34,7 +34,7 @@
 import {login} from '@/api/login';
 export default {
   name: "AdminLogin",
-  comments: {},
+  components: {},
   data() {
     return{
       ruleForm:{
