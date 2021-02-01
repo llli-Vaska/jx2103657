@@ -41,6 +41,7 @@ router.beforeEach((to, from, next) => {
 
         next()
       } else {
+        //如果没有token则返回到登录路径
         next('/')
       }
     }

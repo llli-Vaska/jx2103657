@@ -24,15 +24,11 @@
           <a-menu-item key="6">招聘会信息发布</a-menu-item>
         </a-sub-menu>
         <a-menu-item key="2">
-
           <a-icon type="file-search" />
           <span>招聘信息审核</span>
         </a-menu-item>
-
-
       </a-menu>
     </a-layout-sider>
-
     <a-layout >
                       <!--   header   -->
       <a-layout-header style="background: #fff; padding: 0">
@@ -41,21 +37,19 @@
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="() => (collapsed = !collapsed)"
         />
-
-
           <a-dropdown class="logoout">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()">
               admin <a-icon type="down" />
             </a>
             <a-menu slot="overlay">
-              <a-menu-item>
-                <a href="javascript:;">退出</a>
-              </a-menu-item>
+
+                <a-menu-item>
+                    <a href="javascript:;" @click="logout()">退出</a>
+                </a-menu-item>
+
+
             </a-menu>
           </a-dropdown>
-
-
-
       </a-layout-header>
                         <!--  body   -->
       <a-layout-content
@@ -76,7 +70,15 @@ export default {
     };
   },
   methods:{
+      logout(){
+        //清空token
+        window.localStorage.clear()
 
+        //跳转到登录页
+        this.$router.push('/')
+
+        window.location.reload()
+      }
   },
 };
 </script>

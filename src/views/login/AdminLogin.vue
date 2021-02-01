@@ -73,10 +73,16 @@ export default {
               this.$store.dispatch('setToken', res.data.token)
               this.$store.dispatch('setAdmin', res.data.token)
 
+              this.$message({
+                showClose: true,
+                message: '登陆成功',
+                type: 'success'
+              },1000);
+
               setTimeout(() => {
                     //跳转页面
                       this.$router.push({ path: '/admin' })
-                    }, 1000)
+                    }, 1500)
 
               console.log('登陆成功')
             }else{
