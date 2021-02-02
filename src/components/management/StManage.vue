@@ -11,7 +11,7 @@
       <el-form-item label="搜索:" class="query-form">
         <el-input v-model="st_number_xh" placeholder="输入学号" class="st-query-xh"></el-input>
         <el-input v-model="st_number_xm" placeholder="输入姓名" class="st-query-xm"></el-input>
-        <el-button type="primary" icon="el-icon-search" class="btn-query">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" class="btn-query" @click="searchScreen">搜索</el-button>
         <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="dialogFormVisible = true">添加</el-button>
 
           <el-dialog title="添加用户" :visible.sync="dialogFormVisible" >
@@ -155,8 +155,9 @@ name: "StManage",
       pageSize: 10,
       total: 50,
 
-      st_number_xh: '',
-      st_number_xm: '',
+
+      st_number_xh: '',//搜索学号
+      st_number_xm: '',//搜索姓名
       tableData: [{
         number: '',
         name: '',
@@ -167,6 +168,7 @@ name: "StManage",
         major:''
       }],
       dialogFormVisible: false,
+      //添加表单
       form: {
         name: '',
         number: '',
@@ -182,7 +184,28 @@ name: "StManage",
 
     }
   },
+  watch: {
+    //当姓名搜索框无内容时，下方学生用户信息返回到总页面信息
+    st_number_xm() {
+      if (!this.st_number_xm){
+        this.getStudent()
+      }
+    }
+  },
   methods: {
+  //search
+    searchScreen() {
+      //搜索框中的关键字
+      let st_number_xm = this.st_number_xm
+      console.log(st_number_xm)
+
+      var searchtableData = this.tableData.filter(item => {
+        // console.log(item)
+          return item.name.match(st_number_xm)
+      })
+      console.log(searchtableData)
+      this.tableData = searchtableData
+    },
   //添加学生用户到数据库
     AddStudent() {
       const form = this.form
@@ -218,9 +241,9 @@ name: "StManage",
   mounted() {
   //将后台数据渲染到页面
     this.getStudent()
-    setInterval(() => {
-      this.getStudent()
-    },5000)
+    // setInterval(() => {
+    //   this.getStudent()
+    // },5000)
 
   }
 }
