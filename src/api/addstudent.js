@@ -1,8 +1,8 @@
 import axios from "axios";
-//admin登录请求
-export function login(params){
+//addstudent请求
+export function addstudent(params){
     return axios({
-        url:'/adminlogin',
+        url:'/addstudent',
         method:'post',
         data: params
     })

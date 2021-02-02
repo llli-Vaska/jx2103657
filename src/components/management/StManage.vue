@@ -12,7 +12,39 @@
         <el-input v-model="st_number_xh" placeholder="输入学号" class="st-query-xh"></el-input>
         <el-input v-model="st_number_xm" placeholder="输入姓名" class="st-query-xm"></el-input>
         <el-button type="primary" icon="el-icon-search" class="btn-query">搜索</el-button>
-        <el-button type="primary" icon="el-icon-plus" class="btn-query">添加</el-button>
+        <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="dialogFormVisible = true">添加</el-button>
+
+          <el-dialog title="添加用户" :visible.sync="dialogFormVisible" >
+            <el-form :model="form">
+              <el-form-item label="姓名:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.name" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="性别:" class="dialog-form-sex">
+                <el-radio v-model="form.sex" label="男">男</el-radio>
+                <el-radio v-model="form.sex" label="女">女</el-radio>
+              </el-form-item>
+              <el-form-item label="学号（账号）:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.number" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="登陆密码:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.password" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="系别:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.department" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="专业:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.major" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="AddStudent()">确 定</el-button>
+            </div>
+          </el-dialog>
+
         <el-button type="primary" icon="el-icon-document-add" class="btn-query">批量添加</el-button>
         <el-button type="primary" icon="el-icon-document-add" class="btn-query">excel导出</el-button>
         <el-button type="danger" icon="el-icon-delete" class="btn-query">删除</el-button>
@@ -111,6 +143,9 @@
 </template>
 
 <script>
+import {addstudent} from "@/api/addstudent";
+import {student} from "@/api/student";
+
 export default {
 name: "StManage",
   data() {
@@ -123,21 +158,49 @@ name: "StManage",
       st_number_xh: '',
       st_number_xm: '',
       tableData: [{
-        number: '1830630505',
-        name: '王小虎',
+        number: '',
+        name: '',
+        sex: '',
+        phone:'',
+        password:'',
+        department: '',
+        major:''
+      }],
+      dialogFormVisible: false,
+      form: {
+        name: '',
+        number: '',
         sex: '男',
-        phone:'15680823501',
-        password:'123456',
-        department: '计算机系',
-        major:'计算机应用技术'
+        phone: '',
+        password:'',
+        department: '',
+        major: ''
+
       },
-
-
-      ],
+      formLabelWidth: '120px'
       // multipleSelection: []
+
     }
   },
   methods: {
+  //添加学生用户到数据库
+    AddStudent() {
+      const form = this.form
+      addstudent(form).then(res => {
+        console.log(res.data.msg)
+      })
+      setTimeout(() => {
+        this.getStudent()
+      },1000)
+      //关闭对话框
+      this.dialogFormVisible = false
+    },
+    //查询学生表
+    getStudent(){
+      student().then(res => {
+        this.tableData = res.data
+      })
+    },
     onShowSizeChange(current, pageSize) {
       this.pageSize = pageSize;
       console.log(this.pageSize)
@@ -151,11 +214,27 @@ name: "StManage",
     handleSelectionChange(val) {
       this.multipleSelection = val;
     }
+  },
+  mounted() {
+  //将后台数据渲染到页面
+    this.getStudent()
+    setInterval(() => {
+      this.getStudent()
+    },5000)
+
   }
 }
 </script>
 
 <style scoped>
+.dialog-form-sex {
+  /*margin-bottom: 8px;*/
+  margin-left: 77px;
+}
+.dialog-form {
+  width: 420px;
+  margin-bottom: 10px;
+}
 .paging {
   margin-left: 25%;
     margin-top: 20px;
