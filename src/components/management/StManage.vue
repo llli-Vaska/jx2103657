@@ -159,7 +159,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pageNum"
-        :page-sizes="[10, 20, 30]"
+        :page-sizes="[15, 25, 35]"
         :page-size="queryInfo.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
@@ -182,7 +182,7 @@ name: "StManage",
       //分页
       queryInfo: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 15
       },
       total:0,
 
