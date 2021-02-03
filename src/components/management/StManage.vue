@@ -190,21 +190,35 @@ name: "StManage",
       if (!this.st_number_xm){
         this.getStudent()
       }
+    },
+    st_number_xh() {
+      if (!this.st_number_xh){
+        this.getStudent()
+      }
     }
   },
   methods: {
   //search
     searchScreen() {
       //搜索框中的关键字
+      let st_number_xh = this.st_number_xh //学号
       let st_number_xm = this.st_number_xm
-      console.log(st_number_xm)
-
-      var searchtableData = this.tableData.filter(item => {
-        // console.log(item)
+      // console.log(st_number_xm)
+      if (!st_number_xh) {
+        let searchtableData = this.tableData.filter(item => {
+          // console.log(item)
           return item.name.match(st_number_xm)
-      })
-      console.log(searchtableData)
-      this.tableData = searchtableData
+        })
+        // console.log(searchtableData)
+        this.tableData = searchtableData
+      } else if (!st_number_xm) {
+        let searchtableData = this.tableData.filter(item => {
+          return item.number.match(st_number_xh)
+        })
+        // console.log(searchtableData)
+        this.tableData = searchtableData
+      }
+
     },
   //添加学生用户到数据库
     AddStudent() {
@@ -241,10 +255,6 @@ name: "StManage",
   mounted() {
   //将后台数据渲染到页面
     this.getStudent()
-    // setInterval(() => {
-    //   this.getStudent()
-    // },5000)
-
   }
 }
 </script>
