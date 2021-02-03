@@ -120,7 +120,7 @@
         </template>
       </el-table-column>
     </el-table>
-
+<!--分页-->
     <template>
       <a-pagination
           show-overflow-tooltip
@@ -145,6 +145,7 @@
 <script>
 import {addstudent} from "@/api/addstudent";
 import {student} from "@/api/student";
+import {deletestudent} from "@/api/deletestudent";
 
 export default {
 name: "StManage",
@@ -228,6 +229,15 @@ name: "StManage",
       })
       setTimeout(() => {
         this.getStudent()
+       this.form = {
+         name: '',
+         number: '',
+         sex: '男',
+         phone: '',
+         password:'',
+         department: '',
+         major: ''
+       }
       },1000)
       //关闭对话框
       this.dialogFormVisible = false
@@ -245,8 +255,15 @@ name: "StManage",
     handleEdit(index, row) {
       console.log(index, row);
     },
+    //删除单条信息
     handleDelete(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
+      deletestudent(row).then(res =>{
+        console.log(res)
+        if (res.data.code === 0) {
+          this.getStudent()
+        }
+      })
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
