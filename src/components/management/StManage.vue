@@ -47,7 +47,7 @@
 
         <el-button type="primary" icon="el-icon-document-add" class="btn-query">批量添加</el-button>
         <el-button type="primary" icon="el-icon-document-add" class="btn-query">excel导出</el-button>
-        <el-button type="danger" icon="el-icon-delete" class="btn-query">删除</el-button>
+        <el-button type="danger" icon="el-icon-delete" class="btn-query" @click="batchDelete(tableChecked)">批量删除</el-button>
       </el-form-item>
 
 
@@ -180,9 +180,9 @@ name: "StManage",
         major: ''
 
       },
-      formLabelWidth: '120px'
-      // multipleSelection: []
-
+      formLabelWidth: '120px',
+      // multipleSelection: [],
+      tableChecked:[]
     }
   },
   watch: {
@@ -263,7 +263,7 @@ name: "StManage",
     },
     //删除单条信息
     handleDelete(index, row) {
-      // console.log(index, row);
+      console.log(index, row);
       deletestudent(row).then(res =>{
         console.log(res)
         if (res.data.code === 0) {
@@ -275,8 +275,21 @@ name: "StManage",
         }
       })
     },
+    //批量删除
+    batchDelete(val){
+      console.log(val.length)
+      if (val.length) {
+        for(let i = 0; i < val.length; i++) {
+          deletestudent(val[i])
+        }
+      }
+      this.getStudent()
+    },
+    //选中的信息
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      //选中需要删除的信息
+      this.tableChecked = val;
+      // console.log(this.tableChecked)
     }
   },
   mounted() {
