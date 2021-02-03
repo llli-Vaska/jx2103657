@@ -146,7 +146,6 @@
             </div>
           </el-dialog>
 
-
           <el-button
               size="mini"
               type="danger"
@@ -156,23 +155,15 @@
 
     </el-table>
 <!--分页-->
-    <template>
-      <a-pagination
-          show-overflow-tooltip
-          class="paging"
-          v-model="current"
-          :page-size-options="pageSizeOptions"
-          :total="total"
-          show-size-changer
-          :page-size="pageSize"
-          @showSizeChange="onShowSizeChange"
-      >
-        <template slot="buildOptionText" slot-scope="props">
-          <span v-if="props.value !== '50'">{{ props.value }}条/页</span>
-          <span v-if="props.value === '50'">全部</span>
-        </template>
-      </a-pagination>
-    </template>
+    <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pageNum"
+        :page-sizes="[10, 20, 30]"
+        :page-size="queryInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+    </el-pagination>
   </div>
 
 </template>
@@ -182,16 +173,18 @@ import {addstudent} from "@/api/addstudent";
 import {student} from "@/api/student";
 import {deletestudent} from "@/api/deletestudent";
 import {editstudent} from "@/api/editstudent";
+import {studentall} from "@/api/studentall";
 
 export default {
 name: "StManage",
   data() {
     return {
-      pageSizeOptions: ['10', '20', '30', '40', '50'],
-      current: 1,
-      pageSize: 10,
-      total: 50,
-
+      //分页
+      queryInfo: {
+        pageNum: 1,
+        pageSize: 10
+      },
+      total:0,
 
       st_number_xh: '',//搜索学号
       st_number_xm: '',//搜索姓名
@@ -296,25 +289,43 @@ name: "StManage",
     },
     //查询学生表
     getStudent(){
-      student().then(res => {
+      //获取限制数量的信息
+      student(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
         this.tableData = res.data
+        // console.log(this.tableData)
+      })
+      //获取总信息条数
+      studentall().then(res => {
+        this.total = res.data.length
+        // console.log(this.total)
       })
     },
-    onShowSizeChange(current, pageSize) {
-      this.pageSize = pageSize;
-      console.log(this.pageSize)
+
+    //分页
+    //监听尺寸改变
+    handleSizeChange(newSize) {
+      // console.log(newSize);
+      this.queryInfo.pageSize = newSize
+      this.getStudent()
     },
+    //监听页码改变
+    handleCurrentChange(newPage) {
+      // console.log(newPage);
+      this.queryInfo.pageNum = (newPage - 1) * this.queryInfo.pageSize
+      this.getStudent()
+    },
+
     //编辑修改学生信息
     handleEdit(index, row) {
       this.dialogFormVisible2 = true
-      console.log(index, row);
+      // console.log(index, row);
       this.row = row
     },
     //提交编辑的学生信息进行修改
     editStudent(){
         let row = this.row
       editstudent(row).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.data.code === 0) {
           this.form = row
           this.$message({
@@ -329,17 +340,29 @@ name: "StManage",
     },
     //删除单条信息
     handleDelete(index, row) {
-      console.log(index, row);
-      deletestudent(row).then(res =>{
-        console.log(res)
-        if (res.data.code === 0) {
-          this.getStudent()
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          },200);
-        }
-      })
+      // console.log(index, row);
+      this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deletestudent(row).then(res =>{
+          // console.log(res)
+          if (res.data.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getStudent()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+
     },
     //批量删除
     batchDelete(val){

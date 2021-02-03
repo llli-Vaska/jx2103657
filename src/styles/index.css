@@ -8,3 +8,6 @@
 .el-dialog .el-dialog__body {
     padding: 0;
 }
+.el-pagination{
+    margin-top: 30px;
+}
