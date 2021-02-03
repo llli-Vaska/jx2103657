@@ -45,8 +45,8 @@
             </div>
           </el-dialog>
 
-        <el-button type="primary" icon="el-icon-document-add" class="btn-query">批量添加</el-button>
-        <el-button type="primary" icon="el-icon-document-add" class="btn-query">excel导出</el-button>
+<!--        <el-button type="primary" icon="el-icon-document-add" class="btn-query">批量添加</el-button>-->
+<!--        <el-button type="primary" icon="el-icon-document-add" class="btn-query">excel导出</el-button>-->
         <el-button type="danger" icon="el-icon-delete" class="btn-query" @click="batchDelete(tableChecked)">批量删除</el-button>
       </el-form-item>
 
@@ -258,6 +258,7 @@ name: "StManage",
       this.pageSize = pageSize;
       console.log(this.pageSize)
     },
+    //编辑修改学生信息
     handleEdit(index, row) {
       console.log(index, row);
     },
