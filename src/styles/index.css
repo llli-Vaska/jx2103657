@@ -3,6 +3,7 @@
 }
 .el-dialog {
     width: 520px;
+    box-shadow: none;
 }
 .el-dialog .el-dialog__body {
     padding: 0;

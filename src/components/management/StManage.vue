@@ -111,14 +111,49 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+              style="margin-right: 10px"
               size="mini"
               @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+
+          <el-dialog title="编辑用户" :visible.sync="dialogFormVisible2" >
+            <el-form :model="row">
+              <el-form-item label="姓名:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="row.name" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="性别:" class="dialog-form-sex">
+                <el-radio v-model="row.sex" label="男">男</el-radio>
+                <el-radio v-model="row.sex" label="女">女</el-radio>
+              </el-form-item>
+              <el-form-item label="学号（账号）:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="row.number" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="row.phone" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="登陆密码:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="row.password" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="系别:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="row.department" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="专业:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="row.major" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="editStudent()">确 定</el-button>
+            </div>
+          </el-dialog>
+
+
           <el-button
               size="mini"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
+
     </el-table>
 <!--分页-->
     <template>
@@ -146,6 +181,7 @@
 import {addstudent} from "@/api/addstudent";
 import {student} from "@/api/student";
 import {deletestudent} from "@/api/deletestudent";
+import {editstudent} from "@/api/editstudent";
 
 export default {
 name: "StManage",
@@ -169,6 +205,7 @@ name: "StManage",
         major:''
       }],
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       //添加表单
       form: {
         name: '',
@@ -178,7 +215,16 @@ name: "StManage",
         password:'',
         department: '',
         major: ''
-
+      },
+      row: {
+        id:'',
+        name: '',
+        number: '',
+        sex: '男',
+        phone: '',
+        password:'',
+        department: '',
+        major: ''
       },
       formLabelWidth: '120px',
       // multipleSelection: [],
@@ -260,7 +306,26 @@ name: "StManage",
     },
     //编辑修改学生信息
     handleEdit(index, row) {
+      this.dialogFormVisible2 = true
       console.log(index, row);
+      this.row = row
+    },
+    //提交编辑的学生信息进行修改
+    editStudent(){
+        let row = this.row
+      editstudent(row).then(res => {
+        console.log(res)
+        if (res.data.code === 0) {
+          this.form = row
+          this.$message({
+            message: '编辑成功',
+            type: 'success'
+          },200);
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+      this.dialogFormVisible2 = false
     },
     //删除单条信息
     handleDelete(index, row) {
