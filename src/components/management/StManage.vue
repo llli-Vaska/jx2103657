@@ -226,6 +226,12 @@ name: "StManage",
       const form = this.form
       addstudent(form).then(res => {
         console.log(res.data.msg)
+        if (res.data.code === 0) {
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          },200);
+        }
       })
       setTimeout(() => {
         this.getStudent()
@@ -262,6 +268,10 @@ name: "StManage",
         console.log(res)
         if (res.data.code === 0) {
           this.getStudent()
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          },200);
         }
       })
     },
