@@ -70,10 +70,30 @@
       </el-table-column>
       <el-table-column
           sortable
+          prop="Icon"
+          label="公司图标"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
           prop="CompanyName"
           label="公司名"
           width="150"
           show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="Sculpture"
+          label="法人代表头像"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="CompanyPerson"
+          label="法人代表"
+          width="110">
       </el-table-column>
       <el-table-column
           sortable
@@ -88,25 +108,14 @@
           label="密码"
           width="120">
       </el-table-column>
+
       <el-table-column
-          sortable
-          prop="CompanyPerson"
-          label="法人代表"
-          width="110">
-      </el-table-column>
-      <el-table-column
-          prop="Phone"
-          label="手机号"
+          prop="Introduce"
+          label="公司介绍"
           width="120"
           show-overflow-tooltip>
       </el-table-column>
-      <el-table-column
-          sortable
-          prop="Email"
-          label="邮箱"
-          width="120"
-          show-overflow-tooltip>
-      </el-table-column>
+
       <el-table-column
           sortable
           prop="CompanyAddress"
@@ -123,11 +132,50 @@
       </el-table-column>
       <el-table-column
           sortable
-          prop="CompanyScale"
-          label="公司规模"
+          prop="Range"
+          label="经营范围"
           width="120"
           show-overflow-tooltip>
       </el-table-column>
+      <el-table-column
+          sortable
+          prop="RegisteredAddress"
+          label="注册地址"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+
+
+      <el-table-column
+          sortable
+          prop="Condition"
+          label="经营状态"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="Time"
+          label="成立时间"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="Capital"
+          label="注册资本"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="Website"
+          label="公司网站"
+          width="120"
+          show-overflow-tooltip>
+      </el-table-column>
+
+
       <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button
@@ -178,50 +226,75 @@ name: "BuManage",
 
     bu_name:'',
     dialogFormVisible: false, //添加弹框
+    // 显示表单信息
     tableData:[ {
+      Icon: '', //公司图标
       CompanyName: '123', //公司名
+      Sculpture: '请问', //法人代表头像
+      CompanyPerson: '123', //法人代表
       UserName: '123', //账号
       UserPassword: '123', //密码
-      CompanyPerson: '123', //法人代表
-      Phone: '123', //手机号
-      Email: '123', //邮箱
+      Introduce: '请问', //公司介绍
       CompanyAddress: '123', //公司地址
       CompanyType: '123', //公司类型
-      CompanyScale: '123', //公司规模
+      Range: '请问', //经营范围
+      RegisteredAddress: '请问', //注册地址
+      Condition: '去额', //经营状态
+      Time: '2343', //成立时间
+      Capital: '2222', //注册资本
+      Website:'www', //公司网站
     },{
+      Icon: '', //公司图标
       CompanyName: '123', //公司名
+      Sculpture: '', //法人代表头像
+      CompanyPerson: '123', //法人代表
       UserName: '123', //账号
       UserPassword: '123', //密码
-      CompanyPerson: '123', //法人代表
-      Phone: '123', //手机号
-      Email: '123', //邮箱
+      Introduce: '', //公司介绍
       CompanyAddress: '123', //公司地址
       CompanyType: '123', //公司类型
-      CompanyScale: '123', //公司规模
+      Range: '', //经营范围
+      RegisteredAddress: '', //注册地址
+      Condition: '', //经营状态
+      Time: '', //成立时间
+      Capital: '', //注册资本
+      Website:'', //公司网站
     }],
     //添加表单
     form: {
-      CompanyName: '', //公司名
-      UserName: '', //账号
-      UserPassword: '', //密码
-      CompanyPerson: '', //法人代表
-      Phone: '', //手机号
-      Email: '', //邮箱
-      CompanyAddress: '', //公司地址
-      CompanyType: '', //公司类型
-      CompanyScale: '', //公司规模
+      Icon: '', //公司图标
+      CompanyName: '123', //公司名
+      Sculpture: '', //法人代表头像
+      CompanyPerson: '123', //法人代表
+      UserName: '123', //账号
+      UserPassword: '123', //密码
+      Introduce: '', //公司介绍
+      CompanyAddress: '123', //公司地址
+      CompanyType: '123', //公司类型
+      Range: '', //经营范围
+      RegisteredAddress: '', //注册地址
+      Condition: '', //经营状态
+      Time: '', //成立时间
+      Capital: '', //注册资本
+      Website:'', //公司网站
     },
 //编辑 删除 暂存空间
     row: {
+      Icon: '', //公司图标
       CompanyName: '', //公司名
+      Sculpture: '', //法人代表头像
+      CompanyPerson: '', //法人代表
       UserName: '', //账号
       UserPassword: '', //密码
-      CompanyPerson: '', //法人代表
-      Phone: '', //手机号
-      Email: '', //邮箱
+      Introduce: '', //公司介绍
       CompanyAddress: '', //公司地址
       CompanyType: '', //公司类型
-      CompanyScale: '', //公司规模
+      Range: '', //经营范围
+      RegisteredAddress: '', //注册地址
+      Condition: '', //经营状态
+      Time: '', //成立时间
+      Capital: '', //注册资本
+      Website:'', //公司网站
     },
     formLabelWidth: '100px',
     //选中

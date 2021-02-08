@@ -7,3 +7,4 @@ export function studentall() {
 
     })
 }
+//查询学生表
