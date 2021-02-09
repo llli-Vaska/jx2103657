@@ -242,7 +242,7 @@ name: "StManage",
     searchScreen() {
       //搜索框中的关键字
       let st_number_xh = this.st_number_xh //学号
-      let st_number_xm = this.st_number_xm
+      let st_number_xm = this.st_number_xm //姓名
       // console.log(st_number_xm)
       if (!st_number_xh) {
         let searchtableData = this.tableData.filter(item => {
@@ -258,13 +258,12 @@ name: "StManage",
         // console.log(searchtableData)
         this.tableData = searchtableData
       }
-
     },
   //添加学生用户到数据库
     AddStudent() {
       const form = this.form
       addstudent(form).then(res => {
-        console.log(res.data.msg)
+        // console.log(res.data.msg)
         if (res.data.code === 0) {
           this.$message({
             message: '添加成功',

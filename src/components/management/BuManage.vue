@@ -231,7 +231,7 @@ name: "BuManage",
 
 
 
-    bu_name:'',
+    bu_name:'', //搜索框内容
     dialogFormVisible: false, //添加弹框
     // 显示表单信息
     tableData:[ {
@@ -293,7 +293,14 @@ name: "BuManage",
 
   }
   },
-
+  watch: {
+    //当公司搜索框无内容时，下方公司信息返回到总页面信息
+  bu_name() {
+    if (this.bu_name === '') {
+      this.getCompany()
+    }
+  }
+  },
   methods: {
     getCompany() {
       companyall().then(res => {
@@ -308,7 +315,17 @@ name: "BuManage",
     },
   //搜索功能
     searchname() {
-      console.log(this.bu_name)
+      // console.log(this.bu_name)
+      let bu_name = this.bu_name //公司名
+      if(bu_name !== '') {
+        let searchtableData = this.tableData.filter(item => {
+          console.log(item)
+          return item.CompanyName.match(bu_name)
+        })
+        this.tableData = searchtableData
+      } else {
+        this.getCompany()
+      }
     },
   //批量删除
     BubatchDelete(val) {
