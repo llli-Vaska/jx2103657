@@ -337,6 +337,33 @@ name: "BuManage",
   //批量删除
     BubatchDelete(val) {
       console.log(val)
+      console.log(val.length)
+      if (val.length) {
+        this.$confirm('此操作将删除已勾选信息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          for(let i = 0; i < val.length; i++) {
+            deletecompany(val[i])
+          }
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          setTimeout(() => {
+            this.getCompany()
+          },1000)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
+      }
+
+
     },
     //编辑修改公司信息
     handleEdit(index, row) {
@@ -371,6 +398,7 @@ name: "BuManage",
     //选中的信息
     handleSelectionChange(val) {
       //选中需要删除的信息
+      this.tableChecked = val;
       console.log(val)
     },
     //分页
