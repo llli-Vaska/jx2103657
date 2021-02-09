@@ -204,7 +204,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pageNum"
-        :page-sizes="[15, 25, 35]"
+        :page-sizes="[10, 15, 20]"
         :page-size="queryInfo.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
@@ -218,6 +218,8 @@
 
 <script>
 import {companyall} from '@/api/companyall'
+import {company} from "@/api/company";
+
 export default {
 name: "BuManage",
   data() {
@@ -225,7 +227,7 @@ name: "BuManage",
     //分页
     queryInfo: {
       pageNum: 1,
-      pageSize: 15
+      pageSize: 10
     },
     total:0,
 
@@ -303,9 +305,12 @@ name: "BuManage",
   },
   methods: {
     getCompany() {
+      company(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
+        this.tableData = res.data
+      })
       companyall().then(res => {
         // console.log(res.data)
-        this.tableData = res.data
+        this.total = res.data.length
       })
   },
   //添加确定
@@ -347,13 +352,15 @@ name: "BuManage",
     //分页
     //监听尺寸改变
     handleSizeChange(newSize) {
-      console.log(newSize);
-
+      // console.log(newSize);
+      this.queryInfo.pageSize = newSize
+      this.getCompany()
     },
     //监听页码改变
     handleCurrentChange(newPage) {
-      console.log(newPage);
-
+      // console.log(newPage);
+    this.queryInfo.pageNum = (newPage - 1) * this.queryInfo.pageSize
+      this.getCompany()
     },
 
 
