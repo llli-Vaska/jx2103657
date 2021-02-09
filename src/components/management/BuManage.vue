@@ -72,22 +72,30 @@
           sortable
           prop="Icon"
           label="公司图标"
-          width="120"
+          width="110"
+          align="center"
           show-overflow-tooltip>
+        <template slot-scope="scope">
+          <img :src="scope.row.Icon" style= "width: 36px;height:36px">
+        </template>
       </el-table-column>
       <el-table-column
           sortable
           prop="CompanyName"
           label="公司名"
-          width="150"
+          width="120"
           show-overflow-tooltip>
       </el-table-column>
       <el-table-column
           sortable
           prop="Sculpture"
-          label="法人代表头像"
-          width="120"
+          label="法人头像"
+          width="110"
+          align="center"
           show-overflow-tooltip>
+        <template slot-scope="scope">
+          <img :src="scope.row.Sculpture" style= "width: 36px;height:36px">
+        </template>
       </el-table-column>
       <el-table-column
           sortable
@@ -112,7 +120,7 @@
       <el-table-column
           prop="Introduce"
           label="公司介绍"
-          width="120"
+          width="110"
           show-overflow-tooltip>
       </el-table-column>
 
@@ -120,14 +128,14 @@
           sortable
           prop="CompanyAddress"
           label="公司地址"
-          width="150"
+          width="120"
           show-overflow-tooltip>
       </el-table-column>
       <el-table-column
           sortable
           prop="CompanyType"
           label="公司类型"
-          width="120"
+          width="110"
           show-overflow-tooltip>
       </el-table-column>
       <el-table-column
@@ -144,8 +152,6 @@
           width="120"
           show-overflow-tooltip>
       </el-table-column>
-
-
       <el-table-column
           sortable
           prop="Condition"
@@ -176,7 +182,7 @@
       </el-table-column>
 
 
-      <el-table-column label="操作" >
+      <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button
               style="margin-right: 10px"
@@ -211,6 +217,7 @@
 </template>
 
 <script>
+import {companyall} from '@/api/companyall'
 export default {
 name: "BuManage",
   data() {
@@ -229,30 +236,14 @@ name: "BuManage",
     // 显示表单信息
     tableData:[ {
       Icon: '', //公司图标
-      CompanyName: '123', //公司名
-      Sculpture: '请问', //法人代表头像
-      CompanyPerson: '123', //法人代表
-      UserName: '123', //账号
-      UserPassword: '123', //密码
-      Introduce: '请问', //公司介绍
-      CompanyAddress: '123', //公司地址
-      CompanyType: '123', //公司类型
-      Range: '请问', //经营范围
-      RegisteredAddress: '请问', //注册地址
-      Condition: '去额', //经营状态
-      Time: '2343', //成立时间
-      Capital: '2222', //注册资本
-      Website:'www', //公司网站
-    },{
-      Icon: '', //公司图标
-      CompanyName: '123', //公司名
+      CompanyName: '', //公司名
       Sculpture: '', //法人代表头像
-      CompanyPerson: '123', //法人代表
-      UserName: '123', //账号
-      UserPassword: '123', //密码
+      CompanyPerson: '', //法人代表
+      UserName: '', //账号
+      UserPassword: '', //密码
       Introduce: '', //公司介绍
-      CompanyAddress: '123', //公司地址
-      CompanyType: '123', //公司类型
+      CompanyAddress: '', //公司地址
+      CompanyType: '', //公司类型
       Range: '', //经营范围
       RegisteredAddress: '', //注册地址
       Condition: '', //经营状态
@@ -302,7 +293,14 @@ name: "BuManage",
 
   }
   },
+
   methods: {
+    getCompany() {
+      companyall().then(res => {
+        // console.log(res.data)
+        this.tableData = res.data
+      })
+  },
   //添加确定
     AddCompany() {
       //关闭对话框
@@ -342,7 +340,10 @@ name: "BuManage",
     },
 
 
-  }
+  },
+  mounted() {
+    this.getCompany()
+  },
 }
 </script>
 
