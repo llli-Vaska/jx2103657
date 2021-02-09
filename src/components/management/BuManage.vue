@@ -204,7 +204,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pageNum"
-        :page-sizes="[10, 15, 20]"
+        :page-sizes="[15, 25, 35]"
         :page-size="queryInfo.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
@@ -219,6 +219,7 @@
 <script>
 import {companyall} from '@/api/companyall'
 import {company} from "@/api/company";
+import {deletecompany} from "@/api/deletecompany";
 
 export default {
 name: "BuManage",
@@ -226,8 +227,8 @@ name: "BuManage",
   return {
     //分页
     queryInfo: {
-      pageNum: 1,
-      pageSize: 10
+      pageNum: 0,
+      pageSize: 15
     },
     total:0,
 
@@ -256,24 +257,6 @@ name: "BuManage",
     //添加表单
     form: {
       Icon: '', //公司图标
-      CompanyName: '123', //公司名
-      Sculpture: '', //法人代表头像
-      CompanyPerson: '123', //法人代表
-      UserName: '123', //账号
-      UserPassword: '123', //密码
-      Introduce: '', //公司介绍
-      CompanyAddress: '123', //公司地址
-      CompanyType: '123', //公司类型
-      Range: '', //经营范围
-      RegisteredAddress: '', //注册地址
-      Condition: '', //经营状态
-      Time: '', //成立时间
-      Capital: '', //注册资本
-      Website:'', //公司网站
-    },
-//编辑 删除 暂存空间
-    row: {
-      Icon: '', //公司图标
       CompanyName: '', //公司名
       Sculpture: '', //法人代表头像
       CompanyPerson: '', //法人代表
@@ -289,6 +272,25 @@ name: "BuManage",
       Capital: '', //注册资本
       Website:'', //公司网站
     },
+//编辑 删除 暂存空间
+    row: {
+      id:'',
+      Icon: '', //公司图标
+      CompanyName: '', //公司名
+      Sculpture: '', //法人代表头像
+      CompanyPerson: '', //法人代表
+      UserName: '', //账号
+      UserPassword: '', //密码
+      Introduce: '', //公司介绍
+      CompanyAddress: '', //公司地址
+      CompanyType: '', //公司类型
+      Range: '', //经营范围
+      RegisteredAddress: '', //注册地址
+      Condition: '', //经营状态
+      Time: '', //成立时间
+      Capital: '', //注册资本
+      Website:'', //公司网站
+      },
     formLabelWidth: '100px',
     //选中
     tableChecked:[],
@@ -343,11 +345,33 @@ name: "BuManage",
     //删除单条信息
     handleDelete(index, row) {
       console.log(index, row);
+      this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(row)
+        deletecompany(row).then(res =>{
+          console.log(res)
+          if (res.data.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getCompany()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     //选中的信息
-    handleSelectionChange(val) {val
+    handleSelectionChange(val) {
       //选中需要删除的信息
-      console.log()
+      console.log(val)
     },
     //分页
     //监听尺寸改变

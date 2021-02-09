@@ -181,7 +181,7 @@ name: "StManage",
     return {
       //分页
       queryInfo: {
-        pageNum: 1,
+        pageNum: 0,
         pageSize: 15
       },
       total:0,
