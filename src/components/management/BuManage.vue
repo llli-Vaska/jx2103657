@@ -180,8 +180,6 @@
           width="120"
           show-overflow-tooltip>
       </el-table-column>
-
-
       <el-table-column label="操作" width="180" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -189,6 +187,7 @@
               size="mini"
               @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 
+                  <!--      此处还未添加编辑弹框-->
 
           <el-button
               size="mini"
