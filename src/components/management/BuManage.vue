@@ -55,6 +55,37 @@
               <el-form-item label="公司网站:" :label-width="formLabelWidth" class="dialog-form">
                 <el-input v-model="form.Website" autocomplete="off"></el-input>
               </el-form-item>
+
+<!--              -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+              <el-form-item>
+                <el-upload
+                    class="upload-demo1"
+                    action="http://p373196l49.wicp.vip/upload"
+                    name="fr"
+                    :on-success="handleAvatarSuccess1"
+                    :on-remove="handleRemove1"
+                    :file-list="fileList1"
+                    :limit="1"
+                    list-type="picture">
+                  <el-button size="small" type="primary">点击上传公司图标</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+              <el-form-item>
+                <el-upload
+                    class="upload-demo1"
+                    action="http://p373196l49.wicp.vip/upload"
+                    name="fr"
+                    :on-success="handleAvatarSuccess2"
+                    :on-remove="handleRemove2"
+                    :file-list="fileList2"
+                    :limit="1"
+                    list-type="picture">
+                  <el-button size="small" type="primary">点击上传公司法人头像</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+              </el-form-item>
+
             </el-scrollbar>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -233,6 +264,7 @@
 import {companyall} from '@/api/companyall'
 import {company} from "@/api/company";
 import {deletecompany} from "@/api/deletecompany";
+import {deletepicture} from "@/api/deletepicture"
 
 export default {
 name: "BuManage",
@@ -244,8 +276,6 @@ name: "BuManage",
       pageSize: 15
     },
     total:0,
-
-
 
     bu_name:'', //搜索框内容
     dialogFormVisible: false, //添加弹框
@@ -307,6 +337,10 @@ name: "BuManage",
     formLabelWidth: '100px',
     //选中
     tableChecked:[],
+//图片上传
+    fileList1: [], //公司图标
+    fileList2: [], //法人代表头像
+
 
   }
   },
@@ -319,6 +353,37 @@ name: "BuManage",
   }
   },
   methods: {
+  //图片上传
+    //公司图标
+    handleRemove1(file, fileList) {
+      console.log(file, fileList);
+      this.form.Icon = ''//删除重置
+      console.log(file.response)
+      deletepicture(file)
+    },
+    //上传成功 后台返回
+    handleAvatarSuccess1(res, file) {
+      //res就是后端返回的值
+      console.log(file)
+      console.log(res)
+      this.form.Icon = res.imgUrl
+    },
+    //法人代表
+    handleRemove2(file, fileList) {
+      console.log(file, fileList);
+      this.form.Sculpture = ''//删除重置
+    },
+    // 上传成功 后台返回
+    handleAvatarSuccess2(res, file) {
+      //res就是后端返回的值
+      console.log(file)
+      console.log(res)
+      this.form.Sculpture = res.imgUrl
+    },
+
+
+
+
     getCompany() {
       company(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
         this.tableData = res.data
@@ -437,6 +502,8 @@ name: "BuManage",
 </script>
 
 <style scoped>
+
+
 .dialog-form {
   width: 420px;
   margin-bottom: 10px;

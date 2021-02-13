@@ -19,3 +19,18 @@
     overflow-x: hidden;
 }
 .el-scrollbar__wrap { overflow: scroll; width: 110%; height: 120%; }
+.upload-demo1 {
+    width: 90%;
+    margin-bottom: 10px;
+}
+.upload-demo1 .el-upload__tip {
+    margin-top: -8px;
+    margin-left: 15px;
+    margin-bottom: -8px;
+}
+.upload-demo1 .el-button {
+    margin-left: 15px;
+}
+.upload-demo1 .el-upload-list {
+    margin-left: 15px;
+}
