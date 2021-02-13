@@ -13,35 +13,49 @@
         <el-button type="primary" icon="el-icon-search" class="btn-query" @click="searchname">搜索</el-button>
         <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="dialogFormVisible = true">添加</el-button>
 
-        <el-dialog title="添加用户" :visible.sync="dialogFormVisible">
+        <el-dialog title="添加企业" :visible.sync="dialogFormVisible">
           <el-form :model="form" >
-            <el-form-item label="公司名:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.CompanyName" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="用户名(账号):" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.UserName" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="密码:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.UserPassword" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="法人代表:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.CompanyPerson" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="手机号:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.Phone" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.Email" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="公司地址:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.CompanyAddress" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="公司类型:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.CompanyType" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="公司规模:" :label-width="formLabelWidth" class="dialog-form">
-              <el-input v-model="form.CompanyScale" autocomplete="off"></el-input>
-            </el-form-item>
+            <el-scrollbar style="height:100%">
+              <el-form-item label="公司名:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.CompanyName" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="法人代表:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.CompanyPerson" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="用户名(账号):" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.UserName" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="密码:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.UserPassword" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="公司介绍:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.Introduce" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="公司地址:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.CompanyAddress" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="公司类型:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.CompanyType" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="经营范围:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.Range" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="注册地址:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.RegisteredAddress" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="经营状态:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.Condition" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="成立时间:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.Time" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="注册资本:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.Capital" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="公司网站:" :label-width="formLabelWidth" class="dialog-form">
+                <el-input v-model="form.Website" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-scrollbar>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>

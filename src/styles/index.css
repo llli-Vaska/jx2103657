@@ -3,16 +3,19 @@
 }
 .el-dialog {
     width: 520px;
-    /*width: 100%;*/
+
     box-shadow: none;
+    overflow-x: hidden;
 }
 .el-dialog .el-dialog__body {
     padding: 0;
+    height: 350px;
+    overflow-x: hidden;
 }
 .el-pagination{
     margin-top: 30px;
 }
-
-/*.el-input__inner {*/
-/*    width: 300px;*/
-/*}*/
+.page-component__scroll .el-scrollbar__wrap {
+    overflow-x: hidden;
+}
+.el-scrollbar__wrap { overflow: scroll; width: 110%; height: 120%; }
