@@ -358,7 +358,6 @@ name: "BuManage",
     handleRemove1(file, fileList) {
       console.log(file, fileList);
       this.form.Icon = ''//删除重置
-      console.log(file.response)
       deletepicture(file)
     },
     //上传成功 后台返回
@@ -372,6 +371,7 @@ name: "BuManage",
     handleRemove2(file, fileList) {
       console.log(file, fileList);
       this.form.Sculpture = ''//删除重置
+      deletepicture(file)
     },
     // 上传成功 后台返回
     handleAvatarSuccess2(res, file) {
