@@ -240,8 +240,91 @@
               size="mini"
               @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 
-                  <!--      此处还未添加编辑弹框-->
+          <el-dialog title="编辑企业" :visible.sync="dialogFormVisible3" :append-to-body="true">
+            <el-form :model="row">
+              <el-scrollbar style="height:100%">
+                <el-form-item label="公司名:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.CompanyName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="法人代表:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.CompanyPerson" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名(账号):" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.UserName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="密码:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.UserPassword" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="公司介绍:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.Introduce" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="公司地址:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.CompanyAddress" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="公司类型:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.CompanyType" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="经营范围:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.Range" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="注册地址:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.RegisteredAddress" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="经营状态:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.Condition" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="成立时间:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-date-picker
+                      v-model="row.Time"
+                      type="date"
+                      placeholder="选择日期"
+                      format="yyyy 年 MM 月 dd 日"
+                      value-format="yyyy-MM-dd"
+                      autocomplete="off">
+                  </el-date-picker>
+                </el-form-item>
+                <el-form-item label="注册资本:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.Capital" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="公司网站:" :label-width="formLabelWidth" class="dialog-form">
+                  <el-input v-model="row.Website" autocomplete="off"></el-input>
+                </el-form-item>
 
+                <el-form-item>
+                  <el-upload
+                      class="upload-demo1"
+                      action="http://p373196l49.wicp.vip/upload"
+                      name="fr"
+                      :on-success="handleAvatarSuccess1"
+                      :on-remove="handleRemove1"
+                      :file-list="fileList11"
+                      :limit="1"
+                      list-type="picture">
+                    <el-button size="small" type="primary">点击上传公司图标</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                  </el-upload>
+                </el-form-item>
+                <el-form-item>
+                  <el-upload
+                      class="upload-demo1"
+                      action="http://p373196l49.wicp.vip/upload"
+                      name="fr"
+                      :on-success="handleAvatarSuccess2"
+                      :on-remove="handleRemove2"
+                      :file-list="fileList22"
+                      :limit="1"
+                      list-type="picture">
+                    <el-button size="small" type="primary">点击上传公司法人头像</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                  </el-upload>
+                </el-form-item>
+              </el-scrollbar>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+              <el-button type="primary" @click="editCompany()">确 定</el-button>
+            </div>
+          </el-dialog>
           <el-button
               size="mini"
               type="danger"
@@ -250,7 +333,6 @@
       </el-table-column>
 
     </el-table>
-
     <!--分页-->
     <el-pagination
         @size-change="handleSizeChange"
@@ -265,7 +347,6 @@
 
   </div>
 
-
 </template>
 
 <script>
@@ -274,6 +355,7 @@ import {companyall} from '@/api/companyall'
 import {company} from "@/api/company";
 import {deletecompany} from "@/api/deletecompany";
 import {deletepicture} from "@/api/deletepicture"
+import {editcompany} from "@/api/edit"
 
 export default {
 name: "BuManage",
@@ -288,6 +370,7 @@ name: "BuManage",
 
     bu_name:'', //搜索框内容
     dialogFormVisible: false, //添加弹框
+    dialogFormVisible3: false, //添加弹框
     // 显示表单信息
     tableData:[ {
       Icon: '', //公司图标
@@ -305,6 +388,7 @@ name: "BuManage",
       Time: '', //成立时间
       Capital: '', //注册资本
       Website:'', //公司网站
+
     }],
     //添加表单
     form: {
@@ -342,14 +426,19 @@ name: "BuManage",
       Time: '', //成立时间
       Capital: '', //注册资本
       Website:'', //公司网站
+
       },
+    //图片修改暂存
+    fileList11: [], //公司图标
+    fileList22: [], //法人代表头像
+
     formLabelWidth: '100px',
     //选中
     tableChecked:[],
-//图片上传
+
+   //图片上传
     fileList1: [], //公司图标
     fileList2: [], //法人代表头像
-
 
   }
   },
@@ -359,7 +448,22 @@ name: "BuManage",
     if (this.bu_name === '') {
       this.getCompany()
     }
-  }
+  },
+    row() {
+      if (this.row !== '') {
+        //清空上一次的
+        this.fileList11 = [],
+        this.fileList22 = [],
+        this.fileList11.push({
+          name: this.row.CompanyName,
+          url: this.row.Icon
+        })
+        this.fileList22.push({
+          name: this.row.CompanyPerson,
+          url: this.row.Sculpture
+        })
+      }
+    }
   },
   methods: {
   //图片上传
@@ -389,9 +493,6 @@ name: "BuManage",
       console.log(res)
       this.form.Sculpture = res.imgUrl
     },
-
-
-
 
     getCompany() {
       company(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
@@ -486,6 +587,25 @@ name: "BuManage",
     //编辑修改公司信息
     handleEdit(index, row) {
       console.log(index, row);
+      this.dialogFormVisible3 = true
+      this.row = row
+      console.log(row)
+    },
+    editCompany(){
+      let row = this.row
+      editcompany(row).then(res => {
+        // console.log(res)
+        if (res.data.code === 0) {
+          this.form = row
+          this.$message({
+            message: '编辑成功',
+            type: 'success'
+          },200);
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+      this.dialogFormVisible3 = false
     },
     //删除单条信息
     handleDelete(index, row) {

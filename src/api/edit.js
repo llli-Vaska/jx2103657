@@ -7,3 +7,11 @@ export function editstudent(params){
         data: params
     })
 }
+//compamy请求
+export function editcompany(params){
+    return axios({
+        url:'/editcompany',
+        method:'post',
+        data: params
+    })
+}

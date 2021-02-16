@@ -50,7 +50,6 @@
         <el-button type="danger" icon="el-icon-delete" class="btn-query" @click="batchDelete(tableChecked)">批量删除</el-button>
       </el-form-item>
 
-
     </el-form>
 
     <el-table
@@ -172,7 +171,7 @@
 import {addstudent} from "@/api/add";
 import {student} from "@/api/student";
 import {deletestudent} from "@/api/deletestudent";
-import {editstudent} from "@/api/editstudent";
+import {editstudent} from "@/api/edit";
 import {studentall} from "@/api/studentall";
 
 export default {
