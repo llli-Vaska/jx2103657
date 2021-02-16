@@ -7,3 +7,13 @@ export function addstudent(params){
         data: params
     })
 }
+
+
+//addcompany请求
+export function addcompany(params) {
+    return axios({
+        url: '/addcompany',
+        method: 'post',
+        data: params
+    })
+}

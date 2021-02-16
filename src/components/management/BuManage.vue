@@ -47,7 +47,15 @@
                 <el-input v-model="form.Condition" autocomplete="off"></el-input>
               </el-form-item>
               <el-form-item label="成立时间:" :label-width="formLabelWidth" class="dialog-form">
-                <el-input v-model="form.Time" autocomplete="off"></el-input>
+                <el-date-picker
+                    v-model="form.Time"
+                    type="date"
+                    placeholder="选择日期"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    autocomplete="off">
+                </el-date-picker>
+<!--                <el-input v-model="form.Time" autocomplete="off"></el-input>-->
               </el-form-item>
               <el-form-item label="注册资本:" :label-width="formLabelWidth" class="dialog-form">
                 <el-input v-model="form.Capital" autocomplete="off"></el-input>
@@ -261,6 +269,7 @@
 </template>
 
 <script>
+import {addcompany} from "@/api/add";
 import {companyall} from '@/api/companyall'
 import {company} from "@/api/company";
 import {deletecompany} from "@/api/deletecompany";
@@ -395,6 +404,37 @@ name: "BuManage",
   },
   //添加确定
     AddCompany() {
+      const form = this.form
+      console.log(form)
+      addcompany(form).then(res => {
+        // console.log(res.data.msg)
+        if (res.data.code === 0) {
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          },200);
+        }
+      })
+      setTimeout(() => {
+        this.getCompany()
+        this.form = {
+          Icon: '', //公司图标
+          CompanyName: '', //公司名
+          Sculpture: '', //法人代表头像
+          CompanyPerson: '', //法人代表
+          UserName: '', //账号
+          UserPassword: '', //密码
+          Introduce: '', //公司介绍
+          CompanyAddress: '', //公司地址
+          CompanyType: '', //公司类型
+          Range: '', //经营范围
+          RegisteredAddress: '', //注册地址
+          Condition: '', //经营状态
+          Time: '', //成立时间
+          Capital: '', //注册资本
+          Website:'', //公司网站
+        }
+      },1000)
       //关闭对话框
       this.dialogFormVisible = false
     },

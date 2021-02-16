@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import {addstudent} from "@/api/addstudent";
+import {addstudent} from "@/api/add";
 import {student} from "@/api/student";
 import {deletestudent} from "@/api/deletestudent";
 import {editstudent} from "@/api/editstudent";
