@@ -19,11 +19,14 @@
           <span slot="title"><a-icon type="user" /><span>用户管理</span></span>
           <a-menu-item key="3"><router-link to='/admin/StManage'>学生管理</router-link></a-menu-item>
           <a-menu-item key="4"><router-link to='/admin/BuManage'>企业管理</router-link></a-menu-item>
+
         </a-sub-menu>
         <a-sub-menu key="sub2">
-          <span slot="title"><a-icon type="edit" /><span>信息发布</span></span>
-          <a-menu-item key="5">宣讲会信息发布</a-menu-item>
-          <a-menu-item key="6">招聘会信息发布</a-menu-item>
+          <span slot="title"><a-icon type="edit" /><span>信息发布与管理</span></span>
+          <a-menu-item key="5"><router-link to='/admin/PlManage'>宣讲会信息管理</router-link></a-menu-item>
+          <a-menu-item key="6"><router-link to='/admin/JfManage'>招聘会信息管理</router-link></a-menu-item>
+          <a-menu-item key="7"><router-link to='/admin/PlPublish'>宣讲会信息发布</router-link></a-menu-item>
+          <a-menu-item key="8"><router-link to='/admin/JfPublish'>招聘会信息发布</router-link></a-menu-item>
         </a-sub-menu>
         <a-menu-item key="2">
           <a-icon type="file-search" />

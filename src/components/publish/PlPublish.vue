@@ -1,0 +1,93 @@
+<template>
+<!--宣讲会发布-->
+  <div class="pl">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>信息发布</el-breadcrumb-item>
+      <el-breadcrumb-item>宣讲会信息发布</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <el-form ref="form" :model="form" label-width="100px" class="form_write">
+      <el-form-item label="宣讲公司">
+        <el-input v-model="form.CompanyName"></el-input>
+      </el-form-item>
+      <el-form-item label="活动时间">
+        <el-date-picker
+            v-model="form.date"
+            type="datetimerange"
+            range-separator="-"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="宣讲学校">
+        <el-input v-model="form.school"></el-input>
+      </el-form-item>
+      <el-form-item label="宣讲具体地址">
+        <el-input v-model="form.address"></el-input>
+      </el-form-item>
+      <el-form-item label="宣讲企业链接">
+        <el-input v-model="form.link"></el-input>
+      </el-form-item>
+      <el-form-item label="宣讲会简介">
+        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8}" v-model="form.introduction"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">立即发布</el-button>
+        <el-button @click="resetForm('form')">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: "PlPublish",
+  data() {
+    return {
+      form: {
+        CompanyName: '',
+        date: '',
+        school: '',
+        address: '',
+        link:'',
+        introduction: ''
+      }
+    }
+  },
+  methods: {
+    //发布
+    onSubmit() {
+      console.log('submit!');
+      console.log(this.form)
+    },
+    //重置
+    resetForm(formName) {
+      this[formName] = {
+        CompanyName: '',
+        date: '',
+        school: '',
+        address: '',
+        link:'',
+        introduction: ''
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.form_write {
+  margin-top: 25px;
+  padding-top: 15px;
+  width: 50%;
+}
+.pl {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  min-height: 570px
+}
+</style>
