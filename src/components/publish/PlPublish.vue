@@ -111,7 +111,7 @@ export default {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         cb(results);
-      }, 2000 * Math.random());
+      }, 200 * Math.random());
     },
     createStateFilter(queryString) {
       return (state) => {

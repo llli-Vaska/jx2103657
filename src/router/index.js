@@ -77,6 +77,14 @@ const routes = [
         },
         component: () => import('@/components/publish/JfPublish')
       },
+      {//招聘信息审核
+        path: 'JfExamine',
+        name: 'JfExamine',
+        meta: {
+          requireAuth:true //进入该路由是需要登录的
+        },
+        component: () => import('@/components/examine/JfExamine')
+      },
     ]
   }
 ];

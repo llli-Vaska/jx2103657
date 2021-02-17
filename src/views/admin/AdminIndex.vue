@@ -28,10 +28,11 @@
           <a-menu-item key="7"><router-link to='/admin/PlPublish'>宣讲会信息发布</router-link></a-menu-item>
           <a-menu-item key="8"><router-link to='/admin/JfPublish'>招聘会信息发布</router-link></a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="2">
-          <a-icon type="file-search" />
-          <span>招聘信息审核</span>
-        </a-menu-item>
+        <a-sub-menu key="sub3">
+          <span slot="title"><a-icon type="file-search" /><span>招聘信息审核</span></span>
+          <a-menu-item key="1"><router-link to='/admin/JfExamine'>信息审核</router-link></a-menu-item>
+        </a-sub-menu>
+
       </a-menu>
     </a-layout-sider>
     <a-layout >
