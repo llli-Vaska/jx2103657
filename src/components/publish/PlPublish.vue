@@ -11,7 +11,7 @@
       <el-form-item label="宣讲公司">
         <el-autocomplete
             class="selectquery"
-            v-model="form.CompanyName"
+            v-model="form.CompanyId"
             :fetch-suggestions="querySearchAsync"
             placeholder="请输入内容"
             @select="handleSelect"
@@ -62,12 +62,12 @@ export default {
       timeout:  null,
       state:'',
       form: {
-        CompanyName: '',
-        date: '',
-        school: '',
-        address: '',
-        link:'',
-        introduction: ''
+        CompanyId: '',//公司名
+        date: '',//起止时间
+        school: '',//学校
+        address: '',//具体地址
+        link:'',//宣讲连接
+        introduction: ''//宣讲简介
       }
     }
   },
