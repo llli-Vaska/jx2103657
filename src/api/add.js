@@ -17,3 +17,12 @@ export function addcompany(params) {
         data: params
     })
 }
+
+//addPL请求
+export function addpl(params) {
+    return axios({
+        url:'/addpl',
+        method: 'post',
+        data: params
+    })
+}

@@ -52,7 +52,8 @@
 
 <script>
 import {companyall} from "@/api/companyall";
-
+import {addpl} from "@/api/add"
+import router from "../../router";
 export default {
   name: "PlPublish",
   data() {
@@ -75,12 +76,43 @@ export default {
     //发布
     onSubmit() {
       console.log('submit!');
-      console.log(this.form)
+      console.log(this.form);
+      if (this.form.CompanyId === ''){
+        this.$message.error('请填写宣讲公司名')
+
+      } else if (this.form.date === ''){
+        this.$message.error('请填写起止时间')
+      }  else if (this.form.school === '') {
+        this.$message.error('请填写宣讲学校')
+      } else if (this.form.address === '') {
+        this.$message.error('请填写具体地址')
+      }else {
+        addpl(this.form).then(res => {
+          // console.log(res.data.code)
+          if (res.data.code === 0) {
+            this.$message.success('发布成功！')
+          }
+        })
+        setTimeout(()=> {
+          this.form = {
+            CompanyId: '',
+            date: '',
+            school: '',
+            address: '',
+            link:'',
+            introduction: ''
+          }, router.push('/admin/PlManage')
+        },2000)
+      }
+
+
+
+
     },
     //重置
     resetForm(formName) {
       this[formName] = {
-        CompanyName: '',
+        CompanyId: '',
         date: '',
         school: '',
         address: '',
