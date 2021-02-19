@@ -148,7 +148,6 @@ export default {
        this.tableData = res.data
         console.log(this.tableData)
       })
-
         cplall().then(res => {
           // console.log(res)
           this.total = res.data.length
