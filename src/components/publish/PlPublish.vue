@@ -56,7 +56,7 @@
 <script>
 import {companyall} from "../../api/companyall";
 import {addpl} from "../../api/add";
-import router from "../../router";
+// import router from "../../router";
 
 export default {
   name: "PlPublish",
@@ -105,9 +105,9 @@ export default {
             address: '',
             link:'',
             introduction: ''
-          },
+          }
 
-              router.push('/admin/PlManage')
+              // router.push('/admin/PlManage')
         },2000)
       }
 

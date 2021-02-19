@@ -29,9 +29,9 @@
           width="50">
       </el-table-column>
       <el-table-column
-          sortable
           label="公司图标"
-          width="150">
+          align="center"
+          width="120">
         <template slot-scope="scope" >
           <img :src="scope.row.Icon" style= "width: 36px;height:36px" alt="">
         </template>
@@ -40,24 +40,25 @@
           sortable
           prop="CompanyName"
           label="宣讲公司"
-          width="180">
+          width="200">
       </el-table-column>
       <el-table-column
           sortable
           prop="date"
           label="起止时间"
-          width="180">
+          width="300">
       </el-table-column>
       <el-table-column
           prop="school"
           label="宣讲学校"
-          width="130"
+          width="180"
           show-overflow-tooltip>
       </el-table-column>
       <el-table-column
+          sortable
           prop="address"
           label="具体地址"
-          width="150">
+          width="110">
       </el-table-column>
       <el-table-column
           sortable
@@ -70,10 +71,10 @@
           sortable
           prop="introduction"
           label="宣讲会简介"
-          width="150"
+          width="182"
           show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="150" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button
               size="mini"
