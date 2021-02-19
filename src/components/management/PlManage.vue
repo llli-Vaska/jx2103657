@@ -5,6 +5,8 @@
       <el-breadcrumb-item>信息发布与管理</el-breadcrumb-item>
       <el-breadcrumb-item>宣讲会信息管理</el-breadcrumb-item>
     </el-breadcrumb>
+
+
   <el-form>
     <el-form-item label="搜索:" class="query-form">
       <el-input v-model="pl_name" placeholder="输入公司名" class="bu-query-name"></el-input>
@@ -13,20 +15,145 @@
     </el-form-item>
   </el-form>
 
+
+    <el-table
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        :default-sort = "{prop: 'date', order: 'descending'}"
+        border
+        @selection-change="handleSelectionChange">
+      <el-table-column
+          type="selection"
+          width="50">
+      </el-table-column>
+      <el-table-column
+          sortable
+          label="公司图标"
+          width="150">
+        <template slot-scope="scope" >
+          <img :src="scope.row.Icon" style= "width: 36px;height:36px" alt="">
+        </template>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="CompanyName"
+          label="宣讲公司"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="date"
+          label="起止时间"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="school"
+          label="宣讲学校"
+          width="130"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          prop="address"
+          label="具体地址"
+          width="150">
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="link"
+          label="宣讲链接"
+          width="150"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column
+          sortable
+          prop="introduction"
+          label="宣讲会简介"
+          width="150"
+          show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!--分页-->
+    <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pageNum"
+        :page-sizes="[15, 25, 35]"
+        :page-size="queryInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+    </el-pagination>
+
   </div>
 </template>
 
 <script>
+import {cpl, cplall} from "../../api/select";
+
 export default {
   name: "PlManage",
   data(){
     return{
+      //分页
+      queryInfo: {
+        pageNum: 0,
+        pageSize: 15
+      },
+      total:0,
+      value1:true,
       pl_name:'', //搜索框内容
       //选中
       tableChecked:[],
+      // 显示表单信息
+      tableData: [{
+        Icon:'',//公司图标
+        CompanyName:'',//宣讲公司
+        'publiclecture.date':'',//起止时间
+        school:'',//宣讲学校
+        address:'',//宣讲会具体地址
+        link:'',//宣讲链接
+        introduction:''//宣讲会简介
+
+      }],
+      formLabelWidth: '120px',
+      //编辑 删除 暂存空间
+      row: {
+        Icon:'',//公司图标
+        CompanyName:'',//宣讲公司
+        date:'',//起止时间
+        school:'',//宣讲学校
+        address:'',//宣讲会具体地址
+        link:'',//宣讲链接
+        introduction:''//宣讲会简介
+      },
     }
   },
+  mounted() {
+    this.getcpl()
+  },
   methods:{
+    //获取company+publiclecture两表的联合查询数据
+    getcpl(){
+      cpl(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
+       this.tableData = res.data
+        console.log(this.tableData)
+      })
+
+        cplall().then(res => {
+          // console.log(res)
+          this.total = res.data.length
+        })
+    },
     //搜索功能
     searchname() {
       console.log(this.pl_name)
@@ -35,7 +162,29 @@ export default {
     BubatchDelete(val) {
       console.log(val)
       console.log(val.length)
+    },
+    //选中的信息
+    handleSelectionChange(val) {
+      //选中需要删除的信息
+      this.tableChecked = val;
+      // console.log(this.tableChecked)
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
 
+    },
+    //分页
+    //监听尺寸改变
+    handleSizeChange(newSize) {
+      // console.log(newSize);
+      this.queryInfo.pageSize = newSize
+      this.getcpl()
+    },
+    //监听页码改变
+    handleCurrentChange(newPage) {
+      // console.log(newPage);
+      this.queryInfo.pageNum = (newPage - 1) * this.queryInfo.pageSize
+      this.getcpl()
     },
   }
 }
