@@ -100,6 +100,8 @@
 
 <script>
 import {cpl, cplall} from "../../api/select";
+import {deletepl} from "../../api/deletepl";
+
 
 export default {
   name: "PlManage",
@@ -142,6 +144,13 @@ export default {
   mounted() {
     this.getcpl()
   },
+  watch:{
+    pl_name(){
+      if (this.pl_name === '') {
+        this.getcpl()
+      }
+    }
+  },
   methods:{
     //获取company+publiclecture两表的联合查询数据
     getcpl(){
@@ -156,12 +165,46 @@ export default {
     },
     //搜索功能
     searchname() {
-      console.log(this.pl_name)
+      // console.log(this.pl_name)
+      let pl_name = this.pl_name //公司名
+      if(pl_name !== '') {
+        let searchTableData = this.tableData.filter(item => {
+          // console.log(item)
+          return item.CompanyName.match(pl_name)
+        })
+        this.tableData = searchTableData
+      }else {
+        this.getcpl()
+      }
     },
     //批量删除
     BubatchDelete(val) {
       console.log(val)
       console.log(val.length)
+      if (val.length) {
+        this.$confirm('此操作将删除已勾选信息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          for(let i = 0; i < val.length; i++) {
+            deletepl(val[i])
+          }
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          setTimeout(() => {
+            this.getcpl()
+          },1000)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
+      }
     },
     //选中的信息
     handleSelectionChange(val) {
@@ -169,9 +212,31 @@ export default {
       this.tableChecked = val;
       // console.log(this.tableChecked)
     },
+    //单条删除
     handleDelete(index, row) {
       console.log(index, row);
-
+      this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(row)
+        deletepl(row).then(res =>{
+          console.log(res)
+          if (res.data.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getcpl()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     //分页
     //监听尺寸改变

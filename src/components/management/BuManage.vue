@@ -350,12 +350,12 @@
 </template>
 
 <script>
-import {addcompany} from "@/api/add";
-import {companyall} from '@/api/companyall'
-import {company} from "@/api/company";
-import {deletecompany} from "@/api/deletecompany";
-import {deletepicture} from "@/api/deletepicture"
-import {editcompany} from "@/api/edit"
+import {addcompany} from "../../api/add";
+import {companyall} from '../../api/companyall'
+import {company} from "../../api/company";
+import {deletecompany} from "../../api/deletecompany";
+import {deletepicture} from "../../api/deletepicture"
+import {editcompany} from "../../api/edit"
 
 export default {
 name: "BuManage",
@@ -545,7 +545,7 @@ name: "BuManage",
       let bu_name = this.bu_name //公司名
       if(bu_name !== '') {
         let searchtableData = this.tableData.filter(item => {
-          console.log(item)
+          // console.log(item)
           return item.CompanyName.match(bu_name)
         })
         this.tableData = searchtableData
