@@ -18,3 +18,21 @@ export function cplall() {
 
     })
 }
+export function jf(offset,limit){
+    return axios({
+        url:'/jf',
+        method:'post',
+        data: {
+            offset: offset,
+            limit: limit
+        }
+    })
+}
+
+export function jfall() {
+    return axios({
+        url: '/jfall',
+        method: 'post',
+
+    })
+}

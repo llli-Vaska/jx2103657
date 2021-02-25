@@ -105,7 +105,6 @@
         <el-button type="danger" icon="el-icon-delete" class="btn-query" @click="BubatchDelete(tableChecked)">批量删除</el-button>
       </el-form-item>
 
-
     </el-form>
 
 

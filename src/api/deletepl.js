@@ -8,3 +8,12 @@ export function deletepl(params){
         data: params
     })
 }
+
+//删除jobfair请求
+export function deletejf(params){
+    return axios({
+        url:'/deletejf',
+        method:'post',
+        data: params
+    })
+}
