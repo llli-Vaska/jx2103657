@@ -71,10 +71,10 @@
           sortable
           prop="introduction"
           label="宣讲会简介"
-          width="182"
+          width="180"
           show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="操作" width="150" align="center" fixed="right">
+      <el-table-column label="操作" width="180" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button
               size="mini"

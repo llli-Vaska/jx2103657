@@ -26,3 +26,12 @@ export function addpl(params) {
         data: params
     })
 }
+
+//addJF请求
+export function addjf(params) {
+    return axios({
+        url:'/addjf',
+        method: 'post',
+        data: params
+    })
+}
