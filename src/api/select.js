@@ -36,3 +36,22 @@ export function jfall() {
 
     })
 }
+//position表
+export function examine(offset,limit){
+    return axios({
+        url:'/examine',
+        method:'post',
+        data: {
+            offset: offset,
+            limit: limit
+        }
+    })
+}
+
+export function examineall() {
+    return axios({
+        url: '/position',
+        method: 'post',
+
+    })
+}

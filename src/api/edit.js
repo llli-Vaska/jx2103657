@@ -15,3 +15,13 @@ export function editcompany(params){
         data: params
     })
 }
+
+//examine adopt refuse请求
+export function adoptrefuse(params){
+    return axios({
+        url:'/adoptrefuse',
+        method:'post',
+        data: params
+    })
+}
+

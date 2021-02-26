@@ -1,7 +1,10 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" style="position:absolute;height: 100%;width: 100%">
                     <!--  aside  -->
-    <a-layout-sider v-model="collapsed" :trigger="null" collapsible >
+    <a-layout-sider v-model="collapsed" :trigger="null" collapsible  breakpoint="lg"
+                    collapsed-width="0"
+                    @collapse="onCollapse"
+                    @breakpoint="onBreakpoint">
       <div class="logo">
         <span>
           <img class="logoimg" src="@/assets/img/logo.png" alt="">
@@ -30,7 +33,7 @@
         </a-sub-menu>
         <a-sub-menu key="sub3">
           <span slot="title"><a-icon type="file-search" /><span>招聘信息审核</span></span>
-          <a-menu-item key="1"><router-link to='/admin/JfExamine'>信息审核</router-link></a-menu-item>
+          <a-menu-item key="9"><router-link to='/admin/JfExamine'>信息审核</router-link></a-menu-item>
         </a-sub-menu>
 
       </a-menu>
@@ -83,7 +86,15 @@ export default {
         this.$router.push('/')
 
         window.location.reload()
-      }
+      },
+    onCollapse(collapsed, type) {
+      console.log(collapsed, type);
+    },
+    onBreakpoint(broken) {
+      console.log(broken);
+    },
+
+
   },
   mounted() {
     // 当页面刷新时，指定回到首页路径

@@ -17,3 +17,11 @@ export function deletejf(params){
         data: params
     })
 }
+//删除position请求
+export function deletejfe(params){
+    return axios({
+        url:'/deletejfe',
+        method:'post',
+        data: params
+    })
+}
