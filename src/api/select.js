@@ -63,3 +63,18 @@ export function adoptposition() {
         method: 'post'
     })
 }
+
+//指定查询通过审核中的position
+export function reviewedposition() {
+    return axios({
+        url: '/reviewedposition',
+        method: 'post'
+    })
+}
+//指定查询审核未通过的position
+export function failedposition() {
+    return axios({
+        url: '/failedposition',
+        method: 'post'
+    })
+}
