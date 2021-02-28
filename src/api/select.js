@@ -55,3 +55,11 @@ export function examineall() {
 
     })
 }
+
+//指定查询通过审核的position
+export function adoptposition() {
+    return axios({
+        url: '/adoptposition',
+        method: 'post'
+    })
+}
