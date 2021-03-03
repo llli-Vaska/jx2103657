@@ -496,6 +496,7 @@ name: "BuManage",
     getCompany() {
       company(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
         this.tableData = res.data
+        console.log(this.tableData)
       })
       companyall().then(res => {
         // console.log(res.data)
@@ -656,6 +657,8 @@ name: "BuManage",
   },
   mounted() {
     this.getCompany()
+
+
   },
 }
 </script>

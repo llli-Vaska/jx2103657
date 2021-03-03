@@ -78,3 +78,10 @@ export function failedposition() {
         method: 'post'
     })
 }
+//查询各专业
+export function selectscale() {
+    return axios({
+        url: '/selectscale',
+        method: 'get'
+    })
+}

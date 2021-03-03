@@ -62,8 +62,8 @@
         <router-link to="/admin/JfExamine">
         <div class="msgbox">
           <img :src="adopt" alt="" style="margin-top: 10px;margin-left: 10px">
-          <div class="msgbox_message1">
-            <span style="font-size: 20px;letter-spacing: 2px;font-weight: normal;color: green">审核通过数:</span>
+          <div class="msgbox_message">
+            <span style="font-size: 20px;letter-spacing: 2px;font-weight: normal;color: green;line-height: 70px">审核通过数:</span>
             <span style="padding-left: 80px;color: green;font-size: 20px;font-weight: bold">{{ Job }}</span>
           </div>
         </div>
@@ -71,8 +71,8 @@
         <router-link to="/admin/JfExamine">
           <div class="msgbox">
             <img :src="reviewed" alt="" style="margin-top: 10px;margin-left: 13px">
-            <div class="msgbox_message2">
-              <span style="font-size: 20px;letter-spacing: 2px;font-weight: normal;color: orange">待审核数:</span>
+            <div class="msgbox_message">
+              <span style="font-size: 20px;letter-spacing: 2px;font-weight: normal;color: orange;line-height: 70px">待审核数:</span>
               <span style="padding-left: 100px;color: orange;font-size: 20px;font-weight: bold">{{ Reviewed }}</span>
             </div>
           </div>
@@ -80,20 +80,39 @@
         <router-link to="/admin/JfExamine">
           <div class="msgbox">
             <img :src="failed" alt="" style="margin-top: 13px;margin-left: 13px">
-            <div class="msgbox_message3">
-              <span style="font-size: 20px;letter-spacing: 2px;font-weight: normal;color: palevioletred">未通过审核数:</span>
-              <span style="padding-left: 60px;color: palevioletred;font-size: 20px;font-weight: bold">{{ Failed }}</span>
+            <div class="msgbox_message">
+              <span style="font-size: 20px;letter-spacing: 2px;font-weight: normal;color: palevioletred;line-height: 70px">未通过审核数:</span>
+              <span style="padding-left: 55px;color: palevioletred;font-size: 20px;font-weight: bold">{{ Failed }}</span>
             </div>
           </div>
         </router-link>
-
       </el-card>
     </a-col>
     <a-col :span="3" class="col">
-
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span style="font-size: 15px;font-weight: bolder">待审核信息剩余</span>
+        </div>
+        <div id="liquid"></div>
+      </el-card>
     </a-col>
     <a-col :span="12" class="col">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span style="font-size: 15px;font-weight: bolder">信息监控分析</span>
+        </div>
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="各院系人数比例" name="first">
+          <div id="pie"></div>
+        </el-tab-pane>
+        <el-tab-pane label="配置管理" name="second">男女比例</el-tab-pane>
 
+      </el-tabs>
+
+
+
+
+      </el-card>
     </a-col>
   </a-row>
 </div>
@@ -110,8 +129,8 @@ import reviewed from '@/assets/index/审核中.png'
 import failed from '@/assets/index/审核未通过.png'
 import {studentall} from "../../api/studentall";
 import {companyall} from "../../api/companyall";
-import {adoptposition, cplall, jfall,reviewedposition,failedposition} from "../../api/select";
-
+import {adoptposition, cplall, jfall, reviewedposition, failedposition, selectscale} from "../../api/select";
+import { Liquid,Pie } from '@antv/g2plot';
 export default {
 name: "HoPage",
   data() {
@@ -128,9 +147,16 @@ name: "HoPage",
     CompanyNumber: '',
     PublicLecture: '',
     JobFaire: '',
-    Job: '',
-    Reviewed: '',
-    Failed: '',
+    Job: Number,
+    Reviewed: Number,//审核中的数
+    Failed: Number,
+    CountPercent:Number,//百分比
+    activeName: 'first',
+    scale:[{
+      type:String,
+      value:Number,
+    }],
+
   }
   },
   mounted() {
@@ -141,8 +167,57 @@ name: "HoPage",
     this.getjobcount()//获取招聘职位数
     this.getreviewedcount()//获取审核中的数
     this.getfailedcount()//获取审核未通过的数
+    setTimeout(() => {
+      this.conutpercent()
+    },200)
+
+
+
+    this.getmajor()
+
   },
   methods: {
+  //专业type
+  getmajor(){
+    selectscale().then(res => {
+      // console.log(res.data)
+      for (let i =0;i<= res.data.length-1;i++){
+        for (let j =0;j<= res.data.length-1;j++) {
+          this.scale[i] = {...res.data[i][0]}
+        }
+      }
+      // console.log(this.scale)
+      const data = this.scale;
+      const piePlot = new Pie('pie', {
+        appendPadding: 10,
+        data,
+        angleField: 'value',
+        colorField: 'type',
+        radius: 0.75,
+        label: {
+          type: 'spider',
+          labelHeight: 28,
+          content: '{name}\n{percentage}',
+        },
+        interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+      });
+      piePlot.update({ "theme": { "styleSheet": { "brandColor": "#5B8FF9", "paletteQualitative10": ["#5B8FF9", "#61DDAA", "#65789B", "#F6BD16", "#7262fd", "#78D3F8", "#9661BC", "#F6903D", "#008685", "#F08BB4"], "paletteQualitative20": ["#5B8FF9", "#CDDDFD", "#61DDAA", "#CDF3E4", "#65789B", "#CED4DE", "#F6BD16", "#FCEBB9", "#7262fd", "#D3CEFD", "#78D3F8", "#D3EEF9", "#9661BC", "#DECFEA", "#F6903D", "#FFE0C7", "#008685", "#BBDEDE", "#F08BB4", "#FFE0ED"] } } });
+      piePlot.render();
+    })
+  },
+    // 待审核信息剩余百分数
+  conutpercent(){
+
+      this.CountPercent = this.Reviewed  / (this.Job + this.Reviewed + this.Failed)
+      const liquidPlot = new Liquid('liquid', {
+        percent: this.CountPercent,
+      });
+    console.log(this.CountPercent)
+      liquidPlot.render();
+  },
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
   //获取学生总数
   getstudentcount() {
     studentall().then(res => {
@@ -168,7 +243,7 @@ name: "HoPage",
       this.JobFaire = res.data.length
     })
     },
-    //获取招聘职位数
+    //获取招聘职位数(审核通过)
     getjobcount() {
     adoptposition().then(res => {
       this.Job  =res.data.length
@@ -191,30 +266,24 @@ name: "HoPage",
 </script>
 
 <style scoped>
-.msgbox_message1 {
-  width: 300px;
-  height: 68px;
-  position: absolute;
-  right: 20px;
-  top: 100px;
+#pie {
+  padding: 0;
 }
-.msgbox_message2{
-  width: 300px;
-  height: 68px;
-  position: absolute;
-  right: 20px;
-  top: 190px;
+#liquid {
+  width: 100%;
+  height: 260px;
 }
-.msgbox_message3 {
-  width: 300px;
+.msgbox_message {
+  width: 70%;
   height: 68px;
   position: absolute;
-  right: 20px;
-  top: 280px;
+  right: 0px;
+  top: 0px;
 }
 .msgbox {
   width: 100%;
   height: 70px;
+  position: relative;
   border-radius: 2px;
   margin-bottom: 18px;
   background-color: #F8F8F8;
