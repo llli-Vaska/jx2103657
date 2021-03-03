@@ -158,6 +158,7 @@ name: "HoPage",
 
   }
   },
+
   mounted() {
     this.getstudentcount()//获取学生总数
     this.getcompanycount()//获取公司企业总数
@@ -168,10 +169,11 @@ name: "HoPage",
     this.getfailedcount()//获取审核未通过的数
     setTimeout(() => {
       this.conutpercent()//水波图
+      this.getmajor()//获取各院系人数比例饼状图
+      this.getSex()//饼状图
     },200)
 
-    this.getmajor()//获取各院系人数比例饼状图
-    this.getSex()//饼状图
+
 
   },
   methods: {
@@ -247,8 +249,9 @@ name: "HoPage",
     console.log(this.CountPercent)
       liquidPlot.render();
   },
-    handleClick(tab, event) {
-      console.log(tab, event);
+    handleClick(tab,event) {
+      console.log(tab);
+      console.log(event)
     },
   //获取学生总数
   getstudentcount() {
