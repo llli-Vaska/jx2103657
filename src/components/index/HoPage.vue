@@ -1,8 +1,8 @@
 <!--首页-->
 <template>
 <div>
-  <a-row type="flex" justify="space-around" style="margin-top: 30px" >
-    <a-col :span="4" class="col">
+  <a-row  style="margin-top: 30px" >
+    <a-col  :xs="23" :md="4" class="col1 ">
       <el-card shadow="hover" style="height: 100px">
       <img :src="student" alt="" style="width: 70px;height: 70px;margin-top: -8px;margin-left: -17px">
       <div class="count">
@@ -12,7 +12,7 @@
       </div>
       </el-card>
     </a-col>
-    <a-col :span="4" class="col">
+    <a-col  :xs="23" :md="4" class="col1">
       <el-card shadow="hover" style="height: 100px">
       <img :src="company" alt="" style="width: 65px;height: 65px;margin-top: -3px;margin-left: -7px">
       <div class="count">
@@ -22,7 +22,7 @@
       </div>
       </el-card>
     </a-col>
-    <a-col :span="4" class="col">
+    <a-col  :xs="23" :md="4" class="col1">
       <el-card shadow="hover" style="height: 100px">
       <img :src="publiclecture" alt="" style="width: 70px;height: 70px;margin-top: -3px;margin-left: -8px">
       <div class="count">
@@ -32,7 +32,7 @@
       </div>
       </el-card>
     </a-col>
-    <a-col :span="4" class="col">
+    <a-col  :xs="23" :md="4" class="col1">
       <el-card shadow="hover" style="height: 100px">
       <img :src="jobfaire" alt="" style="width: 65px;height:65px;margin-top: -3px;margin-left: -8px">
       <div class="count">
@@ -42,7 +42,7 @@
       </div>
       </el-card>
     </a-col>
-    <a-col :span="4" class="col">
+    <a-col  :xs="23" :md="4" class="col1">
       <el-card shadow="hover" style="height: 100px">
       <img :src="job" alt="" style="width: 65px;height:65px;margin-top: -3px;margin-left: -15px">
       <div class="count">
@@ -53,8 +53,8 @@
       </el-card>
     </a-col>
   </a-row>
-  <a-row type="flex" justify="space-around" style="margin-top: 25px;" >
-    <a-col :span="7" class="col">
+  <a-row style="margin-top: 25px">
+    <a-col :xs="23" :md="7" class="col">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="font-size: 15px;font-weight: bolder">招聘职位信息审核</span>
@@ -88,7 +88,7 @@
         </router-link>
       </el-card>
     </a-col>
-    <a-col :span="3" class="col">
+    <a-col :xs="23" :md="3" class="col">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="font-size: 15px;font-weight: bolder">待审核信息剩余</span>
@@ -96,21 +96,20 @@
         <div id="liquid"></div>
       </el-card>
     </a-col>
-    <a-col :span="12" class="col">
+    <a-col :xs="23" :md="12" class="col">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="font-size: 15px;font-weight: bolder">信息监控分析</span>
         </div>
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click="handleClick" class="tab">
         <el-tab-pane label="各院系人数比例" name="first">
           <div id="pie"></div>
         </el-tab-pane>
-        <el-tab-pane label="配置管理" name="second">男女比例</el-tab-pane>
+        <el-tab-pane label="男女比例" name="second">
+          <div id="PieSex"></div>
+        </el-tab-pane>
 
       </el-tabs>
-
-
-
 
       </el-card>
     </a-col>
@@ -127,7 +126,7 @@ import job from '@/assets/index/职位.png'
 import adopt from '@/assets/index/审核(通过).png'
 import reviewed from '@/assets/index/审核中.png'
 import failed from '@/assets/index/审核未通过.png'
-import {studentall} from "../../api/studentall";
+import {studentall, studentsexman, studentsexwoman} from "../../api/studentall";
 import {companyall} from "../../api/companyall";
 import {adoptposition, cplall, jfall, reviewedposition, failedposition, selectscale} from "../../api/select";
 import { Liquid,Pie } from '@antv/g2plot';
@@ -168,15 +167,48 @@ name: "HoPage",
     this.getreviewedcount()//获取审核中的数
     this.getfailedcount()//获取审核未通过的数
     setTimeout(() => {
-      this.conutpercent()
+      this.conutpercent()//水波图
     },200)
 
-
-
-    this.getmajor()
+    this.getmajor()//获取各院系人数比例饼状图
+    this.getSex()//饼状图
 
   },
   methods: {
+  //男女比例
+    getSex(){
+      studentsexman().then(res => {
+        console.log(res.data.length)
+        this.mannum = res.data.length
+      })
+      studentsexwoman().then(res => {
+        console.log(res.data.length)
+        this.womannum = res.data.length
+      })
+      setTimeout(()=> {
+        const data = [
+          { type: '男', value: this.mannum },
+          { type: '女', value: this.womannum },
+        ];
+        const piePlot = new Pie('PieSex', {
+          data,
+          angleField: 'value',
+          colorField: 'type',
+          radius: 0.75,
+          label: {
+            type: 'spider',
+            labelHeight: 28,
+            content: '{name}\n{percentage}',
+          },
+          interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+        });
+        piePlot.update({ "theme": { "styleSheet": { "brandColor": "#5B8FF9", "paletteQualitative10": ["#5B8FF9", "#61DDAA", "#65789B", "#F6BD16", "#7262fd", "#78D3F8", "#9661BC", "#F6903D", "#008685", "#F08BB4"], "paletteQualitative20": ["#5B8FF9", "#CDDDFD", "#61DDAA", "#CDF3E4", "#65789B", "#CED4DE", "#F6BD16", "#FCEBB9", "#7262fd", "#D3CEFD", "#78D3F8", "#D3EEF9", "#9661BC", "#DECFEA", "#F6903D", "#FFE0C7", "#008685", "#BBDEDE", "#F08BB4", "#FFE0ED"] } } });
+        piePlot.render();
+      },100)
+
+
+
+    },
   //专业type
   getmajor(){
     selectscale().then(res => {
@@ -207,10 +239,10 @@ name: "HoPage",
   },
     // 待审核信息剩余百分数
   conutpercent(){
-
       this.CountPercent = this.Reviewed  / (this.Job + this.Reviewed + this.Failed)
-      const liquidPlot = new Liquid('liquid', {
-        percent: this.CountPercent,
+        // console.log(this.CountPercent)
+        const liquidPlot = new Liquid('liquid',{
+        percent: this.Reviewed  / (this.Job + this.Reviewed + this.Failed),
       });
     console.log(this.CountPercent)
       liquidPlot.render();
@@ -266,6 +298,9 @@ name: "HoPage",
 </script>
 
 <style scoped>
+.tab{
+  margin-top: -20px;
+}
 #pie {
   padding: 0;
 }
@@ -277,8 +312,8 @@ name: "HoPage",
   width: 70%;
   height: 68px;
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
 }
 .msgbox {
   width: 100%;
@@ -307,10 +342,22 @@ name: "HoPage",
   padding-top: 15px;
   padding-right: 18px;
 }
+.col1{
+  background-color: #FFFFFF;
+  /*height: 100px;*/
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+  margin-bottom: 10px;
+}
 .col{
   background-color: #FFFFFF;
-  height: 100px;
+  /*height: 100px;*/
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 4px
+  border-radius: 4px;
+  margin-left: 1.5%;
+  margin-bottom: 20px;
 }
+
 </style>
