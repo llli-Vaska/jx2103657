@@ -5,7 +5,7 @@ export function student(offset,limit){
         url:'/student',
         method:'post',
         data: {
-            offset: offset,
+            offset: (offset - 1) * limit,
             limit: limit
         }
     })

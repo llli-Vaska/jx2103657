@@ -46,6 +46,7 @@
           width="300">
       </el-table-column>
       <el-table-column
+          sortable
           prop="state"
           label="审核状态"
           width="120"
@@ -164,7 +165,7 @@ name: "JfExamine",
     return {
       //分页
       queryInfo: {
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 15
       },
       total:0,
@@ -236,7 +237,7 @@ name: "JfExamine",
     getexamine(){
       examine(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
         this.tableData = res.data
-        console.log(this.tableData)
+        // console.log(this.tableData)
       })
       examineall().then(res => {
         // console.log(res)
@@ -245,7 +246,9 @@ name: "JfExamine",
     },
   //tag过滤筛选
     filterTag(value, row) {
+      // console.log(value,row)
       return row.state === value;
+
     },
     //选中的信息
     handleSelectionChange(val) {
@@ -365,7 +368,7 @@ name: "JfExamine",
     //监听页码改变
     handleCurrentChange(newPage) {
       console.log(newPage);
-      this.queryInfo.pageNum = (newPage - 1) * this.queryInfo.pageSize
+      this.queryInfo.pageNum = newPage
       this.getexamine()
     },
   }

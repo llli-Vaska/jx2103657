@@ -5,7 +5,7 @@ export function company(offset,limit){
         url:'/companypage',
         method:'post',
         data: {
-            offset: offset,
+            offset: (offset - 1) * limit,
             limit: limit
         }
     })

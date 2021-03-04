@@ -103,7 +103,7 @@ name: "JfManage",
   return{
     //分页
     queryInfo: {
-      pageNum: 0,
+      pageNum: 1,
       pageSize: 15
     },
     total:0,
@@ -237,7 +237,7 @@ name: "JfManage",
     //监听页码改变
     handleCurrentChange(newPage) {
       // console.log(newPage);
-      this.queryInfo.pageNum = (newPage - 1) * this.queryInfo.pageSize
+      this.queryInfo.pageNum = newPage
       this.getjf()
     },
   }

@@ -5,7 +5,7 @@ export function cpl(offset,limit){
         url:'/cpl',
         method:'post',
         data: {
-            offset: offset,
+            offset: (offset - 1) * limit,
             limit: limit
         }
     })
@@ -23,7 +23,7 @@ export function jf(offset,limit){
         url:'/jf',
         method:'post',
         data: {
-            offset: offset,
+            offset: (offset - 1) * limit,
             limit: limit
         }
     })
@@ -42,7 +42,7 @@ export function examine(offset,limit){
         url:'/examine',
         method:'post',
         data: {
-            offset: offset,
+            offset: (offset - 1) * limit,
             limit: limit
         }
     })
