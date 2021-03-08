@@ -9,8 +9,8 @@
 
     <el-form>
       <el-form-item label="搜索:" class="query-form">
-        <el-input v-model="st_number_xh" placeholder="输入学号" class="st-query-xh"></el-input>
-        <el-input v-model="st_number_xm" placeholder="输入姓名" class="st-query-xm"></el-input>
+<!--        <el-input v-model="st_number_xh" placeholder="输入学号" class="st-query-xh"></el-input>-->
+        <el-input v-model="st_name" placeholder="输入姓名" class="st-query-xm"></el-input>
         <el-button type="primary" icon="el-icon-search" class="btn-query" @click="searchScreen">搜索</el-button>
         <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="dialogFormVisible = true">添加</el-button>
 
@@ -185,8 +185,8 @@ name: "StManage",
       },
       total:0,
 
-      st_number_xh: '',//搜索学号
-      st_number_xm: '',//搜索姓名
+      // st_number_xh: '',//搜索学号
+      st_name: '',//搜索姓名
       tableData: [{
         number: '',
         name: '',
@@ -225,37 +225,28 @@ name: "StManage",
   },
   watch: {
     //当姓名搜索框无内容时，下方学生用户信息返回到总页面信息
-    st_number_xm() {
-      if (!this.st_number_xm){
+    st_name() {
+      if (!this.st_name){
         this.getStudent()
       }
     },
-    st_number_xh() {
-      if (!this.st_number_xh){
-        this.getStudent()
-      }
-    }
+
   },
   methods: {
   //search
     searchScreen() {
       //搜索框中的关键字
-      let st_number_xh = this.st_number_xh //学号
-      let st_number_xm = this.st_number_xm //姓名
-      // console.log(st_number_xm)
-      if (!st_number_xh) {
-        let searchtableData = this.tableData.filter(item => {
-          // console.log(item)
-          return item.name.match(st_number_xm)
+      let st_name = this.st_name //姓名
+      if (st_name !== '') {
+        studentall().then(res => {
+          this.tableData = res.data
+          let searchtableData = this.tableData.filter(item => {
+                 return item.name.match(st_name)
+          })
+          this.tableData = searchtableData
+          this.total = this.tableData.length
+
         })
-        // console.log(searchtableData)
-        this.tableData = searchtableData
-      } else if (!st_number_xm) {
-        let searchtableData = this.tableData.filter(item => {
-          return item.number.match(st_number_xh)
-        })
-        // console.log(searchtableData)
-        this.tableData = searchtableData
       }
     },
   //添加学生用户到数据库
