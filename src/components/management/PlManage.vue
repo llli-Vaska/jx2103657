@@ -103,6 +103,7 @@ import {cpl, cplall} from "../../api/select";
 import {deletepl} from "../../api/deletepl";
 
 
+
 export default {
   name: "PlManage",
   data(){
@@ -167,14 +168,15 @@ export default {
     searchname() {
       // console.log(this.pl_name)
       let pl_name = this.pl_name //公司名
-      if(pl_name !== '') {
-        let searchTableData = this.tableData.filter(item => {
-          // console.log(item)
-          return item.CompanyName.match(pl_name)
+      if (pl_name !== '') {
+        cplall().then(res => {
+          this.tableData = res.data
+          this.tableData = this.tableData.filter(item => {
+            return item.CompanyName.match(pl_name)
+          })
+          this.total = this.tableData.length
+
         })
-        this.tableData = searchTableData
-      }else {
-        this.getcpl()
       }
     },
     //批量删除
