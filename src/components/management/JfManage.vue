@@ -97,6 +97,7 @@
 import {deletejf} from "../../api/deletepl";
 import {jfall, jf} from "../../api/select";
 
+
 export default {
 name: "JfManage",
   data() {
@@ -156,14 +157,15 @@ name: "JfManage",
     searchname() {
       console.log(this.pl_name)
       let jf_name = this.jf_name //公司名
-      if(jf_name !== '') {
-        let searchTableData = this.tableData.filter(item => {
-          // console.log(item)
-          return item.JobFireTitle.match(jf_name)
+      if (jf_name !== '') {
+        jfall().then(res => {
+          this.tableData = res.data
+          this.tableData = this.tableData.filter(item => {
+            return item.JobFireTitle.match(jf_name)
+          })
+          this.total = this.tableData.length
+
         })
-        this.tableData = searchTableData
-      }else {
-        this.getjf()
       }
     },
     //批量删除
