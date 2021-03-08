@@ -270,6 +270,7 @@ name: "JfExamine",
       })
       adoptposition().then(res => {
         this.total = res.data.length
+        // console.log(res)
       })
     },
     //筛选申请中信息
