@@ -543,14 +543,15 @@ name: "BuManage",
     searchname() {
       // console.log(this.bu_name)
       let bu_name = this.bu_name //公司名
-      if(bu_name !== '') {
-        let searchtableData = this.tableData.filter(item => {
-          // console.log(item)
-          return item.CompanyName.match(bu_name)
+      if (bu_name !== '') {
+        companyall().then(res => {
+          this.tableData = res.data
+          this.tableData = this.tableData.filter(item => {
+            return item.CompanyName.match(bu_name)
+          })
+          this.total = this.tableData.length
+
         })
-        this.tableData = searchtableData
-      } else {
-        this.getCompany()
       }
     },
   //批量删除
