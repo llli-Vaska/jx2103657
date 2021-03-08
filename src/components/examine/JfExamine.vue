@@ -28,7 +28,10 @@
         style="width: 100%"
         :default-sort = "{prop: 'date', order: 'descending'}"
         border
-        @selection-change="handleSelectionChange">
+        @selection-change="handleSelectionChange"
+        @filter-change="filterTagTable"
+
+    >
       <el-table-column
           type="selection"
           width="50">
@@ -46,12 +49,13 @@
           width="300">
       </el-table-column>
       <el-table-column
-          sortable
           prop="state"
           label="审核状态"
           width="120"
-          :filters="[{ text: '审核中', value: '申请中' }, { text: '审核通过', value: '审核通过' },{ text: '未通过审核', value: '未通过审核' },]"
+          :filter-multiple="false"
+          :filters="[{ text: '申请中', value: '申请中' }, { text: '审核通过', value: '审核通过' },{ text: '未通过审核', value: '未通过审核' },]"
           :filter-method="filterTag"
+          column-key="aStatus"
           filter-placement="bottom-end">
         <template slot-scope="scope">
           <el-tag
@@ -151,13 +155,21 @@
 </template>
 
 <script>
-// import {deletepl} from "../../api/deletepl";
 
-// import {deletepl} from "../../api/deletepl";
 
-import {examine, examineall} from "../../api/select";
+import {
+  adoptposition,
+  adoptpositionpage,
+  examine,
+  examineall,
+  failedposition,
+  failedpositionpage,
+  reviewedposition,
+  reviewedpositionpage
+} from "../../api/select";
 import {deletejfe} from "../../api/deletepl";
 import {adoptrefuse} from "../../api/edit";
+
 
 export default {
 name: "JfExamine",
@@ -172,16 +184,16 @@ name: "JfExamine",
       jfe_name: '',
       //选中
       tableChecked:[],
-      options: [{
-        value: '选项1',
-        label: '申请中'
-      }, {
-        value: '选项2',
-        label: '通过审核'
-      }, {
-        value: '选项3',
-        label: '审核拒绝'
-      }],
+      // options: [{
+      //   value: '选项1',
+      //   label: '申请中'
+      // }, {
+      //   value: '选项2',
+      //   label: '通过审核'
+      // }, {
+      //   value: '选项3',
+      //   label: '审核拒绝'
+      // }],
       value: '',
       // 显示表单信息
       tableData: [{
@@ -209,7 +221,8 @@ name: "JfExamine",
         Number: '',//招收人数
         state:''//审核状态（0：未通过审核 1：通过审核 2:审核中）
       },
-      loading: false
+      loading: false,
+      status:''
     }
   },
   mounted() {
@@ -220,10 +233,60 @@ name: "JfExamine",
       if (this.jfe_name === '') {
         this.getexamine()
       }
+    },
+    status(val){
+      // console.log(val)
+      // console.log(this.state)
+      if (val === '审核通过'){
+        this.successmsg()
+      }else if (val === '申请中'){
+        this.applymsg()
+      }else if (val ==='未通过审核'){
+        this.faildmasg()
+      }else{
+        this.filterTagTable()
+      }
     }
   },
   methods: {
-  //刷新
+    // tag过滤筛选
+    filterTag(value, row) {
+      this.status = value
+      return row.state === value;
+    },
+    //筛选未通过信息
+    faildmasg(){
+      failedpositionpage(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
+        this.tableData = res.data
+      })
+      failedposition().then(res => {
+        this.total = res.data.length
+      })
+    },
+    //筛选审核通过信息
+    successmsg(){
+      adoptpositionpage(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
+        this.tableData = res.data
+      })
+      adoptposition().then(res => {
+        this.total = res.data.length
+      })
+    },
+    //筛选申请中信息
+    applymsg(){
+      reviewedpositionpage(this.queryInfo.pageNum,this.queryInfo.pageSize).then(res => {
+        this.tableData = res.data
+      })
+      reviewedposition().then(res => {
+        this.total = res.data.length
+      })
+    },
+    filterTagTable(filters){
+      // console.log(filters.aStatus)
+      if (filters.aStatus !== undefined){
+        this.getexamine()
+      }
+    },
     refresh() {
       this.loading = true
       setTimeout(() => {
@@ -244,12 +307,8 @@ name: "JfExamine",
         this.total = res.data.length
       })
     },
-  //tag过滤筛选
-    filterTag(value, row) {
-      // console.log(value,row)
-      return row.state === value;
 
-    },
+
     //选中的信息
     handleSelectionChange(val) {
       //选中需要删除的信息
@@ -260,13 +319,15 @@ name: "JfExamine",
     searchname() {
       console.log(this.jfe_name)
       let jfe_name = this.jfe_name //公司名
-      if(jfe_name !== '') {
-        this.tableData = this.tableData.filter(item => {
-          // console.log(item)
-          return item.CompanyName.match(jfe_name)
+      if (jfe_name !== '') {
+        examineall().then(res => {
+          this.tableData = res.data
+          this.tableData = this.tableData.filter(item => {
+            return item.CompanyName.match(jfe_name)
+          })
+          this.total = this.tableData.length
+
         })
-      }else {
-        this.getexamine()
       }
     },
     //批量删除
@@ -306,9 +367,9 @@ name: "JfExamine",
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        // console.log(row)
         deletejfe(row).then(res =>{
-          console.log(res)
+          // console.log(res)
           if (res.data.code === 0) {
             this.$message({
               type: 'success',
@@ -363,13 +424,32 @@ name: "JfExamine",
     handleSizeChange(newSize) {
       // console.log(newSize);
       this.queryInfo.pageSize = newSize
-      this.getexamine()
+      if (this.status === '审核通过') {
+          this.successmsg()
+      }else if (this.status === '申请中'){
+        this.applymsg()
+      }else if (this.status === '未通过审核') {
+        this.faildmasg()
+      }
+      else{
+        this.getexamine()
+      }
+
     },
     //监听页码改变
     handleCurrentChange(newPage) {
-      console.log(newPage);
+      // console.log(newPage);
       this.queryInfo.pageNum = newPage
-      this.getexamine()
+      if (this.status === '审核通过'){
+        this.successmsg()
+      }else if (this.status === '申请中'){
+        this.applymsg()
+      }else if (this.status === '未通过审核') {
+        this.faildmasg()
+      }
+      else{
+        this.getexamine()
+      }
     },
   }
 }

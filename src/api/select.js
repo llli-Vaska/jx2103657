@@ -63,7 +63,17 @@ export function adoptposition() {
         method: 'post'
     })
 }
-
+//指定查询通过审核的position 分页
+export function adoptpositionpage(offset,limit){
+    return axios({
+        url:'/adoptpositionpage',
+        method:'post',
+        data: {
+            offset: (offset - 1) * limit,
+            limit: limit
+        }
+    })
+}
 //指定查询通过审核中的position
 export function reviewedposition() {
     return axios({
@@ -71,11 +81,33 @@ export function reviewedposition() {
         method: 'post'
     })
 }
+//指定查询通过审核中的position page
+export function reviewedpositionpage(offset,limit) {
+    return axios({
+        url: '/reviewedpositionpage',
+        method: 'post',
+        data: {
+            offset: (offset - 1) * limit,
+            limit: limit
+        }
+    })
+}
 //指定查询审核未通过的position
 export function failedposition() {
     return axios({
         url: '/failedposition',
         method: 'post'
+    })
+}
+//指定查询未通过审核中的position page
+export function failedpositionpage(offset,limit) {
+    return axios({
+        url: '/failedpositionpage',
+        method: 'post',
+        data: {
+            offset: (offset - 1) * limit,
+            limit: limit
+        }
     })
 }
 //查询各专业
