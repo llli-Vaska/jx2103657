@@ -110,6 +110,7 @@ export default {
 .title {
   color: #FFFFFF;
   font-weight: bold;
+  font-size: 30px;
 }
 .login-container {
 
