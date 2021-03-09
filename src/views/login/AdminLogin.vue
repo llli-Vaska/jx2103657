@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <h1 class="title">校园招聘管理系统</h1>
     <el-form class="admin-login-form"  ref="ruleForm" :rules="rules" :model="ruleForm">
       <el-form-item prop="username">
         <el-input
@@ -106,7 +107,12 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  color: #FFFFFF;
+  font-weight: bold;
+}
 .login-container {
+
   position: fixed;
   left: 0;
   top: 0;
@@ -119,12 +125,16 @@ export default {
   justify-content: center;
   align-items: center;
   /*登录背景*/
-  background: url("./adminlogin_bg.jpeg") no-repeat;
+  background: url("../../assets/img/bg.png") no-repeat;
   background-size: cover;
 }
 .admin-login-form {
-  background-color: #fff;
-  padding: 50px;
+  border-radius: 8px;
+  background-color: hsla(0,0%,100%,.9);
+  padding-top: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 15px;
   min-width: 300px;
 }
 .admin-login-btn {
