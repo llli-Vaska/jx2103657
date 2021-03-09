@@ -113,6 +113,9 @@
 
       </el-card>
     </a-col>
+    <a-col :xs="0" :md="10" class="col" style="height: 150px;margin-top: -170px">
+      <iframe style="margin-top: 25px" width="600" height="150" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&a=getcode&id=48&num=6&icon=1"></iframe>
+    </a-col>
   </a-row>
 </div>
 </template>
