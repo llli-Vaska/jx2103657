@@ -11,7 +11,7 @@
       <el-form-item label="搜索:" class="query-form">
         <el-input v-model="bu_name" placeholder="输入公司名" class="bu-query-name"></el-input>
         <el-button type="primary" icon="el-icon-search" class="btn-query" @click="searchname">搜索</el-button>
-        <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="dialogFormVisible = true">添加</el-button>
+        <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="addadd">添加</el-button>
 
         <el-dialog title="添加企业" :visible.sync="dialogFormVisible">
           <el-form :model="form" >
@@ -55,7 +55,7 @@
                     value-format="yyyy-MM-dd"
                     autocomplete="off">
                 </el-date-picker>
-<!--                <el-input v-model="form.Time" autocomplete="off"></el-input>-->
+                <!--                <el-input v-model="form.Time" autocomplete="off"></el-input>-->
               </el-form-item>
               <el-form-item label="注册资本:" :label-width="formLabelWidth" class="dialog-form">
                 <el-input v-model="form.Capital" autocomplete="off"></el-input>
@@ -64,13 +64,13 @@
                 <el-input v-model="form.Website" autocomplete="off"></el-input>
               </el-form-item>
 
-<!--              -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+              <!--              -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
               <el-form-item>
                 <el-upload
                     class="upload-demo1"
                     action="http://p373196l49.wicp.vip/upload"
                     name="fr"
-                    :on-success="handleAvatarSuccess1"
+                    :on-success="handleAvatarSuccess11"
                     :on-remove="handleRemove1"
                     :file-list="fileList1"
                     :limit="1"
@@ -84,7 +84,7 @@
                     class="upload-demo1"
                     action="http://p373196l49.wicp.vip/upload"
                     name="fr"
-                    :on-success="handleAvatarSuccess2"
+                    :on-success="handleAvatarSuccess22"
                     :on-remove="handleRemove2"
                     :file-list="fileList2"
                     :limit="1"
@@ -291,6 +291,7 @@
 
                 <el-form-item>
                   <el-upload
+                      v-model="row.Icon"
                       class="upload-demo1"
                       action="http://p373196l49.wicp.vip/upload"
                       name="fr"
@@ -305,6 +306,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-upload
+                      v-model="row.Sculpture"
                       class="upload-demo1"
                       action="http://p373196l49.wicp.vip/upload"
                       name="fr"
@@ -353,124 +355,164 @@ import {addcompany} from "../../api/add";
 import {companyall} from '../../api/companyall'
 import {company} from "../../api/company";
 import {deletecompany} from "../../api/deletecompany";
-import {deletepicture} from "../../api/deletepicture"
+// import {deletepicture} from "../../api/deletepicture"
 import {editcompany} from "../../api/edit"
 
 export default {
-name: "BuManage",
+  name: "BuManage",
   data() {
-  return {
-    //分页
-    queryInfo: {
-      pageNum: 1,
-      pageSize: 15
-    },
-    total:0,
+    return {
+      //分页
+      queryInfo: {
+        pageNum: 1,
+        pageSize: 15
+      },
+      total:0,
 
-    bu_name:'', //搜索框内容
-    dialogFormVisible: false, //添加弹框
-    dialogFormVisible3: false, //添加弹框
-    // 显示表单信息
-    tableData:[ {
-      Icon: '', //公司图标
-      CompanyName: '', //公司名
-      Sculpture: '', //法人代表头像
-      CompanyPerson: '', //法人代表
-      UserName: '', //账号
-      UserPassword: '', //密码
-      Introduce: '', //公司介绍
-      CompanyAddress: '', //公司地址
-      CompanyType: '', //公司类型
-      Range: '', //经营范围
-      RegisteredAddress: '', //注册地址
-      Condition: '', //经营状态
-      Time: '', //成立时间
-      Capital: '', //注册资本
-      Website:'', //公司网站
-
-    }],
-    //添加表单
-    form: {
-      Icon: '', //公司图标
-      CompanyName: '', //公司名
-      Sculpture: '', //法人代表头像
-      CompanyPerson: '', //法人代表
-      UserName: '', //账号
-      UserPassword: '', //密码
-      Introduce: '', //公司介绍
-      CompanyAddress: '', //公司地址
-      CompanyType: '', //公司类型
-      Range: '', //经营范围
-      RegisteredAddress: '', //注册地址
-      Condition: '', //经营状态
-      Time: '', //成立时间
-      Capital: '', //注册资本
-      Website:'', //公司网站
-    },
+      bu_name:'', //搜索框内容
+      dialogFormVisible: false, //添加弹框
+      dialogFormVisible3: false, //添加弹框
+      // 显示表单信息
+      tableData:[ {
+        Icon: '', //公司图标
+        CompanyName: '', //公司名
+        Sculpture: '', //法人代表头像
+        CompanyPerson: '', //法人代表
+        UserName: '', //账号
+        UserPassword: '', //密码
+        Introduce: '', //公司介绍
+        CompanyAddress: '', //公司地址
+        CompanyType: '', //公司类型
+        Range: '', //经营范围
+        RegisteredAddress: '', //注册地址
+        Condition: '', //经营状态
+        Time: '', //成立时间
+        Capital: '', //注册资本
+        Website:'', //公司网站
+      }],
+      //添加表单
+      form: {
+        Icon: '', //公司图标
+        CompanyName: '', //公司名
+        Sculpture: '', //法人代表头像
+        CompanyPerson: '', //法人代表
+        UserName: '', //账号
+        UserPassword: '', //密码
+        Introduce: '', //公司介绍
+        CompanyAddress: '', //公司地址
+        CompanyType: '', //公司类型
+        Range: '', //经营范围
+        RegisteredAddress: '', //注册地址
+        Condition: '', //经营状态
+        Time: '', //成立时间
+        Capital: '', //注册资本
+        Website:'', //公司网站
+      },
 //编辑 删除 暂存空间
-    row: {
-      id:'',
-      Icon: '', //公司图标
-      CompanyName: '', //公司名
-      Sculpture: '', //法人代表头像
-      CompanyPerson: '', //法人代表
-      UserName: '', //账号
-      UserPassword: '', //密码
-      Introduce: '', //公司介绍
-      CompanyAddress: '', //公司地址
-      CompanyType: '', //公司类型
-      Range: '', //经营范围
-      RegisteredAddress: '', //注册地址
-      Condition: '', //经营状态
-      Time: '', //成立时间
-      Capital: '', //注册资本
-      Website:'', //公司网站
+      row: {
+        // id:'',
+        Icon: null, //公司图标
+        CompanyName: null, //公司名
+        Sculpture: null, //法人代表头像
+        CompanyPerson: null, //法人代表
+        UserName: null, //账号
+        UserPassword: null, //密码
+        Introduce: null, //公司介绍
+        CompanyAddress: null, //公司地址
+        CompanyType: null, //公司类型
+        Range: null, //经营范围
+        RegisteredAddress: null, //注册地址
+        Condition: null, //经营状态
+        Time: null, //成立时间
+        Capital: null, //注册资本
+        Website:null, //公司网站
 
       },
-    //图片修改暂存
-    fileList11: [], //公司图标
-    fileList22: [], //法人代表头像
+      //图片修改暂存
+      fileList11: [], //公司图标
+      fileList22: [], //法人代表头像
 
-    formLabelWidth: '100px',
-    //选中
-    tableChecked:[],
+      formLabelWidth: '100px',
+      //选中
+      tableChecked:[],
 
-   //图片上传
-    fileList1: [], //公司图标
-    fileList2: [], //法人代表头像
+      //图片上传
+      fileList1: [], //公司图标
+      fileList2: [], //法人代表头像
 
-  }
+    }
   },
   watch: {
     //当公司搜索框无内容时，下方公司信息返回到总页面信息
-  bu_name() {
-    if (this.bu_name === '') {
-      this.getCompany()
-    }
-  },
-    row() {
-      if (this.row !== '') {
-        //清空上一次的
-        this.fileList11 = [],
-        this.fileList22 = [],
-        this.fileList11.push({
-          name: this.row.CompanyName,
-          url: this.row.Icon
-        })
-        this.fileList22.push({
-          name: this.row.CompanyPerson,
-          url: this.row.Sculpture
-        })
+    bu_name() {
+      if (this.bu_name === '') {
+        this.getCompany()
       }
-    }
+    },
+    // row() {
+    //   if (this.row !== {
+    //     id:'',
+    //     Icon: '', //公司图标
+    //     CompanyName: '', //公司名
+    //     Sculpture: '', //法人代表头像
+    //     CompanyPerson: '', //法人代表
+    //     UserName: '', //账号
+    //     UserPassword: '', //密码
+    //     Introduce: '', //公司介绍
+    //     CompanyAddress: '', //公司地址
+    //     CompanyType: '', //公司类型
+    //     Range: '', //经营范围
+    //     RegisteredAddress: '', //注册地址
+    //     Condition: '', //经营状态
+    //     Time: '', //成立时间
+    //     Capital: '', //注册资本
+    //     Website:'', //公司网站
+    //   }) {
+    //     //清空上一次的
+    //     this.fileList11 = [],
+    //         this.fileList22 = []
+    //         // this.fileList11.push({
+    //         //   name: this.row.CompanyName,
+    //         //   url: this.row.Icon
+    //         // })
+    //     // this.fileList22.push({
+    //     //   name: this.row.CompanyPerson,
+    //     //   url: this.row.Sculpture
+    //     // })
+    //   }
+    // }
   },
   methods: {
-  //图片上传
+    addadd(){
+      this.dialogFormVisible = true
+      this.form = {
+        Icon: '', //公司图标
+        CompanyName: '', //公司名
+        Sculpture: '', //法人代表头像
+        CompanyPerson: '', //法人代表
+        UserName: '', //账号
+        UserPassword: '', //密码
+        Introduce: '', //公司介绍
+        CompanyAddress: '', //公司地址
+        CompanyType: '', //公司类型
+        Range: '', //经营范围
+        RegisteredAddress: '', //注册地址
+        Condition: '', //经营状态
+        Time: '', //成立时间
+        Capital: '', //注册资本
+        Website:'', //公司网站
+      },
+          this.fileList1 = [], //公司图标
+          this.fileList2 = [] //法人代表头像
+    },
+    //图片上传
     //公司图标
     handleRemove1(file, fileList) {
       console.log(file, fileList);
-      this.form.Icon = ''//删除重置
-      deletepicture(file)
+      this.row.Icon = ''//删除重置
+      this.fileList11 = []//公司图标
+
+      // deletepicture(file)
     },
     //上传成功 后台返回
     handleAvatarSuccess1(res, file) {
@@ -478,19 +520,53 @@ name: "BuManage",
       console.log(file)
       console.log(res)
       this.form.Icon = res.imgUrl
+      this.row.Icon = res.imgUrl
+      this.fileList1.push({
+        name: this.row.CompanyName,
+        url: this.row.Icon
+      })
+
+    },
+    handleAvatarSuccess11(res, file) {
+      //res就是后端返回的值
+      console.log(file)
+      console.log(res)
+      this.form.Icon = res.imgUrl
+      this.row.Icon = res.imgUrl
+      this.fileList11.push({
+        name: this.form.CompanyName,
+        url: this.form.Icon
+      })
+
     },
     //法人代表
     handleRemove2(file, fileList) {
       console.log(file, fileList);
-      this.form.Sculpture = ''//删除重置
-      deletepicture(file)
+      this.fileList22 = []
+      this.row.Sculpture = ''//删除重置
+      this.fileList22 = [] //法人代表头像
+      // deletepicture(file)
     },
     // 上传成功 后台返回
     handleAvatarSuccess2(res, file) {
       //res就是后端返回的值
       console.log(file)
-      console.log(res)
       this.form.Sculpture = res.imgUrl
+      this.row.Sculpture = res.imgUrl
+      this.fileList2.push({
+        name: this.row.CompanyName,
+        url: this.row.Icon
+      })
+    },
+    handleAvatarSuccess22(res, file) {
+      //res就是后端返回的值
+      console.log(file)
+      this.form.Sculpture = res.imgUrl
+      this.row.Sculpture = res.imgUrl
+      this.fileList22.push({
+        name: this.form.CompanyName,
+        url: this.form.Icon
+      })
     },
 
     getCompany() {
@@ -502,8 +578,8 @@ name: "BuManage",
         // console.log(res.data)
         this.total = res.data.length
       })
-  },
-  //添加确定
+    },
+    //添加确定
     AddCompany() {
       const form = this.form
       console.log(form)
@@ -515,31 +591,12 @@ name: "BuManage",
             type: 'success'
           },200);
         }
-      })
-      setTimeout(() => {
         this.getCompany()
-        this.form = {
-          Icon: '', //公司图标
-          CompanyName: '', //公司名
-          Sculpture: '', //法人代表头像
-          CompanyPerson: '', //法人代表
-          UserName: '', //账号
-          UserPassword: '', //密码
-          Introduce: '', //公司介绍
-          CompanyAddress: '', //公司地址
-          CompanyType: '', //公司类型
-          Range: '', //经营范围
-          RegisteredAddress: '', //注册地址
-          Condition: '', //经营状态
-          Time: '', //成立时间
-          Capital: '', //注册资本
-          Website:'', //公司网站
-        }
-      },1000)
+      })
       //关闭对话框
       this.dialogFormVisible = false
     },
-  //搜索功能
+    //搜索功能
     searchname() {
       // console.log(this.bu_name)
       let bu_name = this.bu_name //公司名
@@ -554,7 +611,7 @@ name: "BuManage",
         })
       }
     },
-  //批量删除
+    //批量删除
     BubatchDelete(val) {
       console.log(val)
       console.log(val.length)
@@ -587,13 +644,34 @@ name: "BuManage",
     },
     //编辑修改公司信息
     handleEdit(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
+      this.fileList11 = []
+      this.fileList22 = []
+
+      this.fileList11.push({
+        name: row.CompanyName,
+        url: row.Icon
+      })
+      this.fileList22.push({
+        name: row.CompanyPerson,
+        url: row.Sculpture
+      })
       this.dialogFormVisible3 = true
       this.row = row
-      console.log(row)
+      // console.log(row)
     },
     editCompany(){
+      console.log(this.row)
       let row = this.row
+      // this.fileList11.push({
+      //   name: this.row.CompanyName,
+      //   url: this.row.Icon
+      // })
+      // this.fileList22.push({
+      //   name: this.row.CompanyPerson,
+      //   url: this.row.Sculpture
+      // })
+      console.log(row)
       editcompany(row).then(res => {
         // console.log(res)
         if (res.data.code === 0) {
@@ -650,7 +728,7 @@ name: "BuManage",
     //监听页码改变
     handleCurrentChange(newPage) {
       // console.log(newPage);
-    this.queryInfo.pageNum = newPage
+      this.queryInfo.pageNum = newPage
       this.getCompany()
     },
 

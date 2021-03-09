@@ -1,5 +1,5 @@
 import axios from "axios";
-//company请求
+//company请求//公司分页
 export function company(offset,limit){
     return axios({
         url:'/companypage',
@@ -10,4 +10,3 @@ export function company(offset,limit){
         }
     })
 }
-//公司分页
