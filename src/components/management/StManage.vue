@@ -12,7 +12,7 @@
 <!--        <el-input v-model="st_number_xh" placeholder="输入学号" class="st-query-xh"></el-input>-->
         <el-input v-model="st_name" placeholder="输入姓名" class="st-query-xm"></el-input>
         <el-button type="primary" icon="el-icon-search" class="btn-query" @click="searchScreen">搜索</el-button>
-        <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="dialogFormVisible = true">添加</el-button>
+        <el-button type="primary" icon="el-icon-plus" class="btn-query" @click="addadd">添加</el-button>
 
           <el-dialog title="添加用户" :visible.sync="dialogFormVisible" >
             <el-form :model="form">
@@ -233,6 +233,18 @@ name: "StManage",
 
   },
   methods: {
+  addadd(){
+    this.dialogFormVisible = true
+    this.form = {
+      name: '',
+      number: '',
+      sex: '男',
+      phone: '',
+      password:'',
+      department: '',
+      major: ''
+    }
+  },
   //search
     searchScreen() {
       //搜索框中的关键字
