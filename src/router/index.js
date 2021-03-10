@@ -5,6 +5,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    //简历文件上传测试
+    path:'/test',
+    name: 'ResumeFileUploaddome',
+    component: () => import('@/views/TestDome/ResumeFileUploaddome.vue')
+  },
+  {
     // admin登录页面
     path: '/',
     name: 'AdminLogin',

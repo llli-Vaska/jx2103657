@@ -81,7 +81,7 @@ export function reviewedposition() {
         method: 'post'
     })
 }
-//指定查询通过审核中的position page
+//指定查询通过审核的position page
 export function reviewedpositionpage(offset,limit) {
     return axios({
         url: '/reviewedpositionpage',

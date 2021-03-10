@@ -21,6 +21,7 @@ import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:3000';
 
 
+
 // 全局注册element 组件库
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
