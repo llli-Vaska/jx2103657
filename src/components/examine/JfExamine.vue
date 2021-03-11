@@ -238,11 +238,23 @@ name: "JfExamine",
       // console.log(val)
       // console.log(this.state)
       if (val === '审核通过'){
-        this.successmsg()
+        this.status === '审核通过'
+        setTimeout(()=>{
+          this.successmsg()
+        },100)
+
       }else if (val === '申请中'){
-        this.applymsg()
+        this.status === '申请中'
+        setTimeout(()=>{
+          this.applymsg()
+        },100)
+
       }else if (val ==='未通过审核'){
-        this.faildmasg()
+        this.status === '未通过审核'
+        setTimeout(()=>{
+          this.faildmasg()
+        },100)
+
       }else{
         this.filterTagTable()
       }
