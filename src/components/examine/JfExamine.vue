@@ -53,7 +53,7 @@
           label="审核状态"
           width="120"
           :filter-multiple="false"
-          :filters="[{ text: '申请中', value: '申请中' }, { text: '审核通过', value: '审核通过' },{ text: '未通过审核', value: '未通过审核' },]"
+          :filters="[{ text: '申请中', value: '申请中' }, { text: '审核通过', value: '审核通过' },{ text: '未通过审核', value: '未通过审核' }]"
           :filter-method="filterTag"
           column-key="aStatus"
           filter-placement="bottom-end">
@@ -235,36 +235,47 @@ name: "JfExamine",
       }
     },
     status(val){
-      // console.log(val)
+      console.log(val)
+
       // console.log(this.state)
-      if (val === '审核通过'){
-        this.status === '审核通过'
-        setTimeout(()=>{
-          this.successmsg()
-        },100)
+if (val !== undefined){
+  this.getexamine()
+  if (val === '审核通过'){
+    this.status === '审核通过'
+    setTimeout(()=>{
+      this.successmsg()
+    },100)
 
-      }else if (val === '申请中'){
-        this.status === '申请中'
-        setTimeout(()=>{
-          this.applymsg()
-        },100)
+  }else if (val === '申请中'){
+    this.status === '申请中'
+    setTimeout(()=>{
+      this.applymsg()
+    },100)
 
-      }else if (val ==='未通过审核'){
-        this.status === '未通过审核'
-        setTimeout(()=>{
-          this.faildmasg()
-        },100)
+  }else if (val ==='未通过审核'){
+    this.status === '未通过审核'
+    setTimeout(()=>{
+      this.faildmasg()
+    },100)
+  }
 
-      }else{
-        this.filterTagTable()
-      }
+}
+
     }
   },
   methods: {
     // tag过滤筛选
     filterTag(value, row) {
+      console.log(value)
       this.status = value
-      return row.state === value;
+      if (this.status === '申请中' || this.status === '审核通过' || this.status === '未通过审核'){
+
+        return row.state === value;
+      }else{
+        alert('11111')
+        return row.state === '全部'
+      }
+
     },
     //筛选未通过信息
     faildmasg(){
@@ -295,8 +306,9 @@ name: "JfExamine",
       })
     },
     filterTagTable(filters){
-      // console.log(filters.aStatus)
-      if (filters.aStatus !== undefined){
+      console.log(filters.aStatus)
+      let v = filters.aStatus + 'all'
+      if (v == 'all'){
         this.getexamine()
       }
     },
@@ -304,7 +316,15 @@ name: "JfExamine",
       this.loading = true
       setTimeout(() => {
         setTimeout(() => {
-          this.getexamine()
+          if (this.status === '审核通过') {
+            this.successmsg()
+          }else if (this.status === '申请中'){
+            this.applymsg()
+          }else if (this.status === '未通过审核') {
+            this.faildmasg()
+          }else{
+            this.getexamine()
+          }
         },120)
         this.loading = false
       },700)
@@ -445,6 +465,7 @@ name: "JfExamine",
         this.faildmasg()
       }
       else{
+
         this.getexamine()
       }
 
@@ -460,7 +481,7 @@ name: "JfExamine",
       }else if (this.status === '未通过审核') {
         this.faildmasg()
       }
-      else{
+      else {
         this.getexamine()
       }
     },
