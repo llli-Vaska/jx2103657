@@ -144,6 +144,8 @@ export default {
   },
   mounted() {
     this.getcpl()
+    console.log(this.tableData.introduction)
+
   },
   watch:{
     pl_name(){
